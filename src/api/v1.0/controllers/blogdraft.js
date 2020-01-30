@@ -2,7 +2,7 @@ import BlogDraft from '../models/blogDraft';
 import { check, body, validationResult } from 'express-validator';
 
 
-exports.createDraft = [
+const createDraft = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
   body('category').isLength({ min: 3 }).withMessage("input category"),
   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
@@ -44,7 +44,7 @@ exports.createDraft = [
    }
 ]
 
-exports.getAllDrafts = (req, res) => {
+const getAllDrafts = (req, res) => 
     BlogDraft.find({}, (err, drafts) => {
         if(err) {
             res.status(500).send({
@@ -57,9 +57,9 @@ exports.getAllDrafts = (req, res) => {
             drafts: drafts
         });
     });
-}
 
-exports.getDraft = (req, res) => {
+
+const getDraft = (req, res) => 
     BlogDraft.findById(req.params.id, (err, draft) => {
         if(err) {
             res.status(500).send({
@@ -70,9 +70,9 @@ exports.getDraft = (req, res) => {
             draft: draft
         })
     });
-}
 
-exports.updateDraft = (req, res) => {
+
+const updateDraft = (req, res) => 
     BlogDraft.findByIdAndUpdate(req.params.id, req.body, {upsert: true}, (err, draft) => {
         if(err) {
             res.status(500).send({
@@ -83,19 +83,18 @@ exports.updateDraft = (req, res) => {
             message: 'update successful'
         })
     });
-}
 
-exports.deleteDraft = (req, res) => {
+
+const deleteDraft = (req, res) => 
     AssignedTalk.findByIdAndRemove(req.params.id)
     .then(res.redirect('/api/talks'))
-        res.redirect('/api/talks')
-}
 
-// module.exports = {
-//     createDraft,
-//     getAllDrafts,
-//     getDraft,
-//     updateDraft,
-//     deleteDraft
-// }
+
+module.exports = {
+    createDraft,
+    getAllDrafts,
+    getDraft,
+    updateDraft,
+    deleteDraft
+}
 
