@@ -2,7 +2,7 @@ import BlogDraft from '../models/blogDraft';
 import { check, body, validationResult } from 'express-validator';
 
 
-const createDraft = [
+exports.createDraft = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
   body('category').isLength({ min: 3 }).withMessage("input category"),
   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
@@ -44,7 +44,7 @@ const createDraft = [
    }
 ]
 
-const getAllDrafts = (req, res) => {
+exports.getAllDrafts = (req, res) => {
     BlogDraft.find({}, (err, drafts) => {
         if(err) {
             res.status(500).send({
@@ -59,7 +59,7 @@ const getAllDrafts = (req, res) => {
     });
 }
 
-const getDraft = (req, res) => {
+exports.getDraft = (req, res) => {
     BlogDraft.findById(req.params.id, (err, draft) => {
         if(err) {
             res.status(500).send({
@@ -72,7 +72,7 @@ const getDraft = (req, res) => {
     });
 }
 
-const updateDraft = (req, res) => {
+exports.updateDraft = (req, res) => {
     BlogDraft.findByIdAndUpdate(req.params.id, req.body, {upsert: true}, (err, draft) => {
         if(err) {
             res.status(500).send({
@@ -85,17 +85,17 @@ const updateDraft = (req, res) => {
     });
 }
 
-const deleteDraft = (req, res) => {
+exports.deleteDraft = (req, res) => {
     AssignedTalk.findByIdAndRemove(req.params.id)
     .then(res.redirect('/api/talks'))
         res.redirect('/api/talks')
 }
 
-module.exports = {
-    createDraft,
-    getAllDrafts,
-    getDraft,
-    updateDraft,
-    deleteDraft
-}
+// module.exports = {
+//     createDraft,
+//     getAllDrafts,
+//     getDraft,
+//     updateDraft,
+//     deleteDraft
+// }
 
