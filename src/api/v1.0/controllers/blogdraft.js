@@ -1,4 +1,4 @@
-import BlogDraft from '../models/blogDraft';
+import BlogDraft from '../models/blogdraft';
 import { check, body, validationResult } from 'express-validator';
 
 
@@ -97,4 +97,3 @@ module.exports = {
     updateDraft,
     deleteDraft
 }
-
