@@ -79,7 +79,7 @@ const updateDraft = (req, res) => {
                 message: 'Internal server error'
             })
         }
-        res.status(200).send({
+        res.status(201).send({
             message: 'update successful'
         })
     });
