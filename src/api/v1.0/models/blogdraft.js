@@ -21,7 +21,9 @@ const draftSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-    timestamps: true,
+},
+{
+  timestamps: true
 });
 
 const BlogDraft = mongoose.model('Drafts', draftSchema);
