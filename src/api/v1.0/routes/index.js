@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 const authController = require('../controllers').users;
-const draftController = require('../controllers/blogdraft');
+// const draftController = require('../controllers/blogdraft');
 const authMiddleware = require('../middlewares/auth');
 
 module.exports = (app) => {
