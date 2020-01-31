@@ -6,6 +6,7 @@ const createDraft = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
   body('category').isLength({ min: 3 }).withMessage("input category"),
   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
+  check('metadata').isLength({ min: 3 }).withMessage('Please input the summary'),
 
    (req, res) =>{
        const errors = validationResult(req);
@@ -72,17 +73,35 @@ const getDraft = (req, res) =>
     });
 
 
-const updateDraft = (req, res) => 
-    BlogDraft.findByIdAndUpdate(req.params.id, req.body, {upsert: true}, (err, draft) => {
-        if(err) {
-            res.status(500).send({
-                message: 'Internal server error'
-            })
+const updateDraft = [
+    check('title').isLength({ min: 3 }).withMessage('Please input a title'),
+    body('category').isLength({ min: 3 }).withMessage("input category"),
+    check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
+    check('metadata').isLength({ min: 3 }).withMessage('Please input the summary'),
+  
+     (req, res) =>{
+         const errors = validationResult(req);
+         if(!errors.isEmpty()) {
+             res.status(406).send({ 
+                 errors: errors.array(),
+                 status: 406
+              })
+         } else {
+            BlogDraft.findByIdAndUpdate(
+                req.params.id, req.body, 
+                {upsert: true}, (err, draft) => {
+                if(err) {
+                    res.status(500).send({
+                        message: 'Internal server error'
+                    })
+                }
+                res.status(201).send({
+                    message: 'update successful'
+                })
+            });
         }
-        res.status(201).send({
-            message: 'update successful'
-        })
-    });
+    }
+]
 
 
 const deleteDraft = (req, res) => 
