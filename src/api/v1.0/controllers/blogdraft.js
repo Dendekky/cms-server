@@ -107,8 +107,16 @@ const updateDraft = [
 
 
 const deleteDraft = (req, res) => 
-    BlogDraft.findByIdAndRemove(req.params.id)
-    .then(res.redirect('/api/talks'))
+    BlogDraft.findByIdAndRemove(req.params.id, (err, del) => {
+        if(err) {
+            res.status(500).send({
+                message: 'Internal server error'
+            })
+        }
+        res.status(200).send({
+            message: 'post deleted'
+        })
+    })
 
 
 module.exports = {

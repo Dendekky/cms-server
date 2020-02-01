@@ -16,12 +16,14 @@ module.exports = (app) => {
   app.post('/api/draft', draftController.createDraft);
   app.get('/api/draft/:id', draftController.getDraft);
   app.put('/api/draft/:id', draftController.updateDraft);
+  app.put('/api/draft/:id', draftController.deleteDraft);
   app.get('/api/draft', draftController.getAllDrafts);
 // Posts routes
   app.get('/api/post', getAllPosts);
   app.post('/api/post', createPost);
   app.get('/api/post/:id', getPost);
   app.put('/api/post/:id', updatePost);
+  app.delete('/api/post/:id', deletePost);
 
   app.get('/api/checkToken', authMiddleware.checkAuth, (req, res) => {
     res.sendStatus(200);
