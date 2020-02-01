@@ -19,13 +19,15 @@ const createDraft = [
         const title = req.body.title;
         const category = req.body.category;
         const body = req.body.body;
-        const metadata = req.body.metadata
+        const metadata = req.body.metadata;
+        const postImage = req.body.postImage;
  
         const draft = new BlogDraft({
             title,
             category,
             body,
-            metadata
+            metadata,
+            postImage
          })
         draft.save((err) =>{
             if (err) {

@@ -20,12 +20,14 @@ exports.createPost = [
         const category = req.body.category;
         const body = req.body.body;
         const metadata = req.body.metadata
+        const postImage = req.body.postImage
  
         const post = new BlogPost({
             title,
             category,
             body,
-            metadata
+            metadata,
+            postImage
          })
         post.save((err) =>{
             if (err) {
