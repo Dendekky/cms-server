@@ -19,9 +19,9 @@ module.exports = (app) => {
   app.get('/api/draft', draftController.getAllDrafts);
 // Posts routes
   app.get('/api/post', getAllPosts);
-  api.post('/api/post', createPost);
-  api.get('/api/post/:id', getPost);
-  api.put('/api/post/:id', updatePost);
+  app.post('/api/post', createPost);
+  app.get('/api/post/:id', getPost);
+  app.put('/api/post/:id', updatePost);
 
   app.get('/api/checkToken', authMiddleware.checkAuth, (req, res) => {
     res.sendStatus(200);
