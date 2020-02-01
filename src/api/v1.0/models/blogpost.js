@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import mongoose from 'mongoose';
 
-const draftSchema = mongoose.Schema({
+const postSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -29,6 +29,6 @@ const draftSchema = mongoose.Schema({
   timestamps: true
 });
 
-const BlogDraft = mongoose.model('Drafts', draftSchema);
+const BlogPost = mongoose.model('PublishedPosts', postSchema);
 
-module.exports = BlogDraft;
+module.exports = BlogPost;

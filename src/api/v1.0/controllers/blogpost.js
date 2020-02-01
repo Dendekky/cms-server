@@ -1,8 +1,8 @@
-import BlogDraft from '../models/blogdraft';
+import BlogPost from '../models/BlogPost';
 import { check, body, validationResult } from 'express-validator';
 
 
-const createDraft = [
+exports.createPost = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
   body('category').isLength({ min: 3 }).withMessage("input category"),
   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
@@ -21,13 +21,13 @@ const createDraft = [
         const body = req.body.body;
         const metadata = req.body.metadata
  
-        const draft = new BlogDraft({
+        const post = new BlogPost({
             title,
             category,
             body,
             metadata
          })
-        draft.save((err) =>{
+        post.save((err) =>{
             if (err) {
                 return res.status(500).send({
                     status: 500,
@@ -36,7 +36,7 @@ const createDraft = [
             }
             res.status(201).send({
                 status: 201,
-                success: 'saved to draft'
+                success: 'saved to post'
             })
         }) 
 
@@ -45,8 +45,8 @@ const createDraft = [
    }
 ]
 
-const getAllDrafts = (req, res) => 
-    BlogDraft.find({}, (err, drafts) => {
+exports.getAllPosts = (req, res) => 
+    BlogPost.find({}, (err, posts) => {
         if(err) {
             res.status(500).send({
                 status: 500,
@@ -55,25 +55,25 @@ const getAllDrafts = (req, res) =>
         }
         res.status(200).send({
             status: 200,
-            drafts: drafts
+            posts: posts
         });
     });
 
 
-const getDraft = (req, res) => 
-    BlogDraft.findById(req.params.id, (err, draft) => {
+exports.getPost = (req, res) => 
+    BlogPost.findById(req.params.id, (err, post) => {
         if(err) {
             res.status(500).send({
                 message: 'Internal server error'
             })
         }
         res.status(200).send({
-            draft: draft
+            post: post
         })
     });
 
 
-const updateDraft = [
+exports.updatePost = [
     check('title').isLength({ min: 3 }).withMessage('Please input a title'),
     body('category').isLength({ min: 3 }).withMessage("input category"),
     check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
@@ -87,9 +87,9 @@ const updateDraft = [
                  status: 406
               })
          } else {
-            BlogDraft.findByIdAndUpdate(
+            BlogPost.findByIdAndUpdate(
                 req.params.id, req.body, 
-                {upsert: true}, (err, draft) => {
+                {upsert: true}, (err, post) => {
                 if(err) {
                     res.status(500).send({
                         message: 'Internal server error'
@@ -104,15 +104,15 @@ const updateDraft = [
 ]
 
 
-const deleteDraft = (req, res) => 
-    BlogDraft.findByIdAndRemove(req.params.id)
+exports.deletePost = (req, res) => 
+    BlogPost.findByIdAndRemove(req.params.id)
     .then(res.redirect('/api/talks'))
 
 
-module.exports = {
-    createDraft,
-    getAllDrafts,
-    getDraft,
-    updateDraft,
-    deleteDraft
-}
+// module.exports = {
+//     createPost,
+//     getAllPosts,
+//     getPost,
+//     updatePost,
+//     deletePost
+// }
