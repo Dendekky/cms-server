@@ -1,4 +1,4 @@
-import BlogPost from '../models/BlogPost';
+import BlogPost from '../models/blogpost';
 import { check, body, validationResult } from 'express-validator';
 
 
