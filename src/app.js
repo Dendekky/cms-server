@@ -25,3 +25,5 @@ app.get('*', (req, res) => res.status(200).send({
 }));
 
 export default app;
+
+// "test": "./node_modules/.bin/mocha --require @babel/register './src/test/**/*.js' --recursive --timeout 30000",
