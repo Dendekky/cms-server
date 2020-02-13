@@ -46,6 +46,17 @@ describe('Mm server', async () => {
     });
   });
 
+  await describe('Get draft', () => {
+    it('it should get a draft', (done) => {
+      chai.request(server)
+        .get('/api/draft/' + draft.id)
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+
   await describe('Update draft', () => {
     it('it should update a draft', (done) => {
       chai.request(server)
