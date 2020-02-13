@@ -32,14 +32,33 @@ describe('Mm server', async () => {
       });
   });
 
-  await describe('Post draft', () => {
-    it('it should save a draft', (done) => {
+  // await describe('Post draft', () => {
+  //   it('it should save a draft', (done) => {
+  //     draft.save((err, draft) => {
+  //     chai.request(server)
+  //       .post('/api/draft/')
+  //       .end((err, res) => {
+  //         res.should.have.status(201);
+  //         expect(res.body).to.deep.equal( { status: 201, success: 'saved to draft' } );
+  //         done();
+  //       });
+  //     });
+  //   });
+  // });
+
+  await describe('Update draft', () => {
+    it('it should update a draft', (done) => {
       draft.save((err, draft) => {
       chai.request(server)
-        .post('/api/draft/')
+        .put('/api/draft/' + draft.id)
+        .send({ title: "The Chronicles of Narnia",
+                    category: "Test",
+                    body: "Testing This Guy",
+                    metadata: "hello who is the man in the building" 
+                  })
         .end((err, res) => {
           res.should.have.status(201);
-          expect(res.body).to.deep.equal( { status: 201, success: 'saved to draft' } );
+          expect(res.body).to.deep.equal( { message: 'update successful' } );
           done();
         });
       });
@@ -56,24 +75,7 @@ describe('Mm server', async () => {
         });
     });
   });
-
-  await describe('Update draft', () => {
-    it('it should update a draft', (done) => {
-      chai.request(server)
-        .put('/api/draft/' + draft.id)
-        .send({ title: "The Chronicles of Narnia",
-                    category: "Test",
-                    body: "Testing This Guy",
-                    metadata: "hello who is the man in the building" 
-                  })
-        .end((err, res) => {
-          res.should.have.status(201);
-          expect(res.body).to.deep.equal( { message: 'update successful' } );
-          done();
-        });
-    });
-  });
-
+  
   await describe('Delete draft', () => {
     it('it should delete a draft', (done) => {
       chai.request(server)
