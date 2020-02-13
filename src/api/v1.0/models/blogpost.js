@@ -23,10 +23,10 @@ const postSchema = mongoose.Schema({
   },
   postImage: {
     type: String,
-  }
+  },
 },
 {
-  timestamps: true
+  timestamps: true,
 });
 
 const BlogPost = mongoose.model('PublishedPosts', postSchema);

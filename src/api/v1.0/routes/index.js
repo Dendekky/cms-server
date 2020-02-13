@@ -1,7 +1,10 @@
 /* eslint-disable linebreak-style */
+import {
+  createPost, getPost, getAllPosts, updatePost, deletePost,
+} from '../controllers/blogpost';
+
 const authController = require('../controllers').users;
 const draftController = require('../controllers').blogdraft;
-import { createPost, getPost, getAllPosts, updatePost, deletePost } from '../controllers/blogpost';
 const authMiddleware = require('../middlewares/auth');
 
 module.exports = (app) => {
@@ -18,7 +21,7 @@ module.exports = (app) => {
   app.put('/api/draft/:id', draftController.updateDraft);
   app.delete('/api/draft/:id', draftController.deleteDraft);
   app.get('/api/draft', draftController.getAllDrafts);
-// Posts routes
+  // Posts routes
   app.get('/api/post', getAllPosts);
   app.post('/api/post', createPost);
   app.get('/api/post/:id', getPost);

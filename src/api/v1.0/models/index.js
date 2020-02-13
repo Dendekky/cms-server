@@ -1,5 +1,6 @@
 /* eslint-disable linebreak-style */
 import mongoose from 'mongoose';
+
 require('dotenv').config();
 
 // const config = require('../config/config');
