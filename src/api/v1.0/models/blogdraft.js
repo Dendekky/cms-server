@@ -23,10 +23,10 @@ const draftSchema = mongoose.Schema({
   },
   postImage: {
     type: String,
-  }
+  },
 },
 {
-  timestamps: true
+  timestamps: true,
 });
 
 const BlogDraft = mongoose.model('Drafts', draftSchema);
