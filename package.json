@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node_modules/.bin/mocha --require @babel/register './src/test/**/*.js' --recursive --timeout 30000",
+    "test": "node_modules/.bin/mocha --require @babel/register 'src/test/**/*.js' --recursive --timeout 30000",
     "start": "npm run prod",
     "heroku-postbuild": "npm install --production",
     "dev": "cross-env NODE_ENV=development DEBUG=energee-api:server npm run watch ./src/bin/www",
