@@ -28,17 +28,15 @@ const login = [
           status: 200,
         });
         } else {
-        res.status(401).send({
+        res.status(500).send({
           success: false,
           message: err.message,
-          status: 401,
         });
         }
       } catch (err) {
-        res.status(401).send({
+        res.status(500).send({
           success: false,
           message: err.message,
-          status: 401,
         });
       }
     }
