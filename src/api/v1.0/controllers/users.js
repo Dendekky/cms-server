@@ -19,7 +19,7 @@ const login = [
         status: 401,
       });
     } else {
-      try {
+      // try {
         const token = await authService.authenticate(req.body);
         if (req.body.username == process.env.ADMIN_USERNAME && req.body.password == process.env.ADMIN_PASSWORD ) {
         res.status(200).header('x-access-token', token).send({
@@ -29,15 +29,15 @@ const login = [
         } else {
         res.status(500).send({
           success: false,
-          message: err.message,
+          message: 'some error',
         });
         }
-      } catch (err) {
-        res.status(500).send({
-          success: false,
-          message: err.message,
-        });
-      }
+      // } catch (err) {
+      //   res.status(500).send({
+      //     success: false,
+      //     message: err.message,
+      //   });
+      // }
     }
   },
 ];
