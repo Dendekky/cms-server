@@ -22,10 +22,9 @@ const login = [
       try {
         const token = await authService.authenticate(req.body);
         if (req.body.username == process.env.ADMIN_USERNAME && req.body.password == process.env.ADMIN_PASSWORD ) {
-        res.status(200).header('x-access-token', token).json({
+        res.status(200).header('x-access-token', token).send({
           success: true,
           token,
-          status: 200,
         });
         } else {
         res.status(500).send({
