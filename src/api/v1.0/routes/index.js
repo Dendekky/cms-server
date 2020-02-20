@@ -13,8 +13,8 @@ module.exports = (app) => {
   }));
 
   app.post('/api/login', authController.login);
-  app.post('/api/register', authController.register);
-  app.get('/api/users', authController.userList);
+  // app.post('/api/register', authController.register);
+  // app.get('/api/users', authController.userList);
   // Drafts routes
   app.post('/api/draft', draftController.createDraft);
   app.get('/api/draft/:id', draftController.getDraft);
