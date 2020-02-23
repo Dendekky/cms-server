@@ -7,7 +7,7 @@ import debugLib from 'debug';
 import http from 'http';
 import app from '../app';
 
-const debug = debugLib('energee-api:server');
+const debug = debugLib('mm-api:server');
 
 
 /**
