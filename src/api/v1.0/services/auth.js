@@ -1,6 +1,4 @@
 /* eslint-disable linebreak-style */
-import Users from '../models/user';
-
 // const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
