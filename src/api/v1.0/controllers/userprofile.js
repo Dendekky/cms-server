@@ -19,3 +19,16 @@ exports.updateProfile = (req, res) => {
         console.error(error);
     }
 }
+
+exports.getProfile = (req, res) => UserProfile.find({}, (err, userprofile) => {
+    if (err) {
+      res.status(500).send({
+        status: 500,
+        message: 'Internal server error',
+      });
+    }
+    res.status(200).send({
+      status: 200,
+      userprofile,
+    });
+  });

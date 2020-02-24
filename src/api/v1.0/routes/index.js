@@ -2,7 +2,7 @@
 import {
   createPost, getPost, getAllPosts, updatePost, deletePost,
 } from '../controllers/blogpost';
-import { updateProfile } from '../controllers/userprofile';
+import { updateProfile, getProfile } from '../controllers/userprofile';
 const authController = require('../controllers').users;
 const draftController = require('../controllers').blogdraft;
 const authMiddleware = require('../middlewares/auth');
@@ -15,6 +15,7 @@ module.exports = (app) => {
 
   app.post('/api/login', authController.login);
   app.put('/api/user', updateProfile);
+  app.get('/api/user', getProfile);
   // app.post('/api/register', authController.register);
   // app.get('/api/users', authController.userList);
   // Drafts routes
