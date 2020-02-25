@@ -11,9 +11,7 @@ exports.authenticate = params => {
       id: params.password,
       time: new Date(),
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: config.development.tokenExpireTime || config.production.tokenExpireTime,
-    });
+    const token = jwt.sign(payload, process.env.JWT_SECRET);
     return token;
   // });
 }
