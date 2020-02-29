@@ -3,6 +3,7 @@ import {
   createPost, getPost, getAllPosts, updatePost, deletePost,
 } from '../controllers/blogpost';
 import { updateProfile, getProfile } from '../controllers/userprofile';
+
 const authController = require('../controllers').users;
 const draftController = require('../controllers').blogdraft;
 const authMiddleware = require('../middlewares/auth');
