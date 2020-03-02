@@ -4,7 +4,7 @@ import  parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
 
-const imageTest = (req, res) => {
+const createDraft = (req, res) => {
   // console.log(req.body);
 
   parseImage(req, res, function(err) {
@@ -16,8 +16,6 @@ const imageTest = (req, res) => {
     // console.log(req.body);
     // console.log(req.files.postImage[0]);
     const file = req.files.postImage[0].path;
-
-
 
     uploadImage(file)
     .then((result) => {
@@ -34,12 +32,10 @@ const imageTest = (req, res) => {
       draft.save((err) => {
         if (err) {
           return res.status(500).send({
-            status: 500,
             message: 'Internal server error',
           });
         }
         res.status(201).send({
-          status: 201,
           success: 'saved to draft',
         });
       });
@@ -48,44 +44,44 @@ const imageTest = (req, res) => {
   })
 };
 
-const createDraft = [
-  check('title').isLength({ min: 3 }).withMessage('Please input a title'),
-  body('category').isLength({ min: 3 }).withMessage('input category'),
-  check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
-  check('metadata').isLength({ min: 3 }).withMessage('Please input the summary'),
+// const createDraft = [
+//   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
+//   body('category').isLength({ min: 3 }).withMessage('input category'),
+//   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
+//   check('metadata').isLength({ min: 3 }).withMessage('Please input the summary'),
 
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(406).send({
-        errors: errors.array(),
-        status: 406,
-      });
-    } else {
-      const { title, category, body, metadata, postImage } = req.body;
+//   (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       res.status(406).send({
+//         errors: errors.array(),
+//         status: 406,
+//       });
+//     } else {
+//       const { title, category, body, metadata, postImage } = req.body;
 
-      const draft = new BlogDraft({
-        title,
-        category,
-        body,
-        metadata,
-        postImage,
-      });
-      draft.save((err) => {
-        if (err) {
-          return res.status(500).send({
-            status: 500,
-            message: 'Internal server error',
-          });
-        }
-        res.status(201).send({
-          status: 201,
-          success: 'saved to draft',
-        });
-      });
-    }
-  },
-];
+//       const draft = new BlogDraft({
+//         title,
+//         category,
+//         body,
+//         metadata,
+//         postImage,
+//       });
+//       draft.save((err) => {
+//         if (err) {
+//           return res.status(500).send({
+//             status: 500,
+//             message: 'Internal server error',
+//           });
+//         }
+//         res.status(201).send({
+//           status: 201,
+//           success: 'saved to draft',
+//         });
+//       });
+//     }
+//   },
+// ];
 
 const getAllDrafts = (req, res) => BlogDraft.find({}, (err, drafts) => {
   if (err) {
@@ -162,6 +158,5 @@ module.exports = {
   getAllDrafts,
   getDraft,
   updateDraft,
-  deleteDraft,
-  imageTest
+  deleteDraft
 };

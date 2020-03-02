@@ -25,7 +25,6 @@ module.exports = (app) => {
   app.put('/api/draft/:id', draftController.updateDraft);
   app.delete('/api/draft/:id', draftController.deleteDraft);
   app.get('/api/draft', draftController.getAllDrafts);
-  app.post('/api/upload', draftController.imageTest);
   // Posts routes
   app.get('/api/post', getAllPosts);
   app.post('/api/post', createPost);
