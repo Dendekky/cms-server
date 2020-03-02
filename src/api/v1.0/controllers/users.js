@@ -21,16 +21,16 @@ const login = [
     } else {
       try {
         const token = authService.authenticate(req.body);
-        if (req.body.username == process.env.ADMIN_USERNAME && req.body.password == process.env.ADMIN_PASSWORD ) {
-        res.status(200).header('x-access-token', token).send({
-          success: true,
-          token,
-        });
+        if (req.body.username == process.env.ADMIN_USERNAME && req.body.password == process.env.ADMIN_PASSWORD) {
+          res.status(200).header('x-access-token', token).send({
+            success: true,
+            token,
+          });
         } else {
-        res.status(500).send({
-          success: false,
-          message: err.message,
-        });
+          res.status(500).send({
+            success: false,
+            message: err.message,
+          });
         }
       } catch (err) {
         res.status(500).send({
@@ -42,7 +42,7 @@ const login = [
   },
 ];
 
-  
+
 module.exports = {
-  login
+  login,
 };

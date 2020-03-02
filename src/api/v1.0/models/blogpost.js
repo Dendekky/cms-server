@@ -16,11 +16,6 @@ const postSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  metadata: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   postImage: {
     type: String,
   },

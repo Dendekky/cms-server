@@ -10,4 +10,4 @@ mongoose.connect(process.env.DATABASE_URL, {
   useCreateIndex: true,
   useUnifiedTopology: true,
 })
-.catch(err => console.log(err));
+  .catch(err => console.log(err));
