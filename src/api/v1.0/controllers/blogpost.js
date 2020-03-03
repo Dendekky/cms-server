@@ -71,7 +71,6 @@ exports.updatePost = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
   body('category').isLength({ min: 3 }).withMessage('input category'),
   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
-  check('metadata').isLength({ min: 3 }).withMessage('Please input the summary'),
 
   (req, res) => {
     const errors = validationResult(req);
@@ -110,11 +109,3 @@ exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (er
   });
 });
 
-
-// module.exports = {
-//     createPost,
-//     getAllPosts,
-//     getPost,
-//     updatePost,
-//     deletePost
-// }

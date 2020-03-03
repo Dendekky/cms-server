@@ -113,7 +113,6 @@ const updateDraft = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
   body('category').isLength({ min: 3 }).withMessage('input category'),
   check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
-  check('metadata').isLength({ min: 3 }).withMessage('Please input the summary'),
 
   (req, res) => {
     const errors = validationResult(req);
