@@ -1,5 +1,7 @@
 import cloudinary from 'cloudinary';
-import fs from 'fs';
+// import fs from 'fs';
+require('dotenv').config();
+
 
 cloudinary.config({
     cloud_name: 'dendekky',
