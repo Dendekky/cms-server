@@ -1,5 +1,6 @@
 import { check, body, validationResult } from 'express-validator';
 import BlogPost from '../models/blogpost';
+import PostComment from '../models/comments';
 import  parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
@@ -54,18 +55,19 @@ exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
   });
 });
 
-
-exports.getPost = (req, res) => BlogPost.findById(req.params.id, (err, post) => {
-  if (err) {
-    res.status(500).send({
-      message: 'Internal server error',
-    });
-  }
-  res.status(200).send({
-    post,
+exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
+  .populate("comments")
+  .then((post) => {
+    if (!post) {
+      return res.status(500).send({
+        message: 'Internal server error',
+      });
+    }
+    return res.status(200).json(post);
+  })
+  .catch(function(err) {
+    res.json(err);
   });
-});
-
 
 exports.updatePost = [
   check('title').isLength({ min: 3 }).withMessage('Please input a title'),
@@ -97,7 +99,6 @@ exports.updatePost = [
   },
 ];
 
-
 exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (err, del) => {
   if (err) {
     res.status(500).send({
@@ -108,4 +109,23 @@ exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (er
     message: 'post deleted',
   });
 });
+
+exports.createComment = (req, res) => {
+  const { name, message, post } = req.body;
+  PostComment.create({name, message, post })
+  .then((comment) => 
+   BlogPost.findOneAndUpdate({ _id: post }, {$push: {comments: comment._id}}, { new: true })
+  )
+  .then((blogpost) => {
+    if (!blogpost) {
+     return res.status(500).send({
+        message: 'Internal server error',
+      });
+    }
+    return res.json(blogpost)
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+}
 
