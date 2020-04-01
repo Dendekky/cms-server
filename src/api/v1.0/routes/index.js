@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import {
-  createPost, getPost, getAllPosts, updatePost, deletePost,
+  createPost, getPost, getAllPosts, updatePost, deletePost, createComment
 } from '../controllers/blogpost';
 import { updateProfile, getProfile } from '../controllers/userprofile';
 
@@ -31,6 +31,8 @@ module.exports = (app) => {
   app.get('/api/post/:id', getPost);
   app.put('/api/post/:id', updatePost);
   app.delete('/api/post/:id', deletePost);
+  // Comment routes
+  app.post('/api/comment', createComment);
 
   app.get('/api/checkToken', authMiddleware.checkAuth, (req, res) => {
     res.sendStatus(200);
