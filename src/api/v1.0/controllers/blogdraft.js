@@ -15,6 +15,7 @@ const createDraft = (req, res) => {
     }
     // console.log(req.body);
     // console.log(req.files.postImage[0]);
+    // console.log(req.files)
     const file = req.files.postImage[0].path;
 
     uploadImage(file)
