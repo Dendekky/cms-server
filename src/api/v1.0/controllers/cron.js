@@ -27,11 +27,12 @@ exports.sendMail = async (req, res) => {
 
         smtpTransport.sendMail({ // email options
         from: `Ibrahim <${process.env.CRON_EMAIL}>`,
-        to: 'Friend <dendekky@gmail.com>', // receiver
-        subject: 'Test Cron Job', // subject
+        to: 'Lover <praisesubtle@gmail.com>', // receiver
+        subject: 'My Daily Love Snippet', // subject
         html: `<div>
-                    <p>Hello friend</p>
-                    <p>${message}</p>
+                    <h2>Hello Love,</h2>
+                    <h6>${message}</h6>
+                    <p>What do you think?</p>
                     </div>`, // body (var data which we've declared)
         }, (error, response) => { // callback
         if (error) {
