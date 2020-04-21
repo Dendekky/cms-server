@@ -13,10 +13,9 @@ const createDraft = (req, res) => {
     if (err) {
       return res.status(500).send(err)
     }
-    // console.log(req.body);
-    // console.log(req.files.postImage[0]);
-    // console.log(req.files)
+    console.log(req.files)
     const file = req.files.postImage[0].path;
+    console.log(file)
 
     uploadImage(file)
     .then((result) => {
@@ -29,7 +28,7 @@ const createDraft = (req, res) => {
         body,
         postImage,
       });
-      console.log(draft);
+      // console.log(draft);
       draft.save((err) => {
         if (err) {
           return res.status(500).send({

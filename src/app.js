@@ -25,10 +25,10 @@ app.get('*', (req, res) => res.status(200).send({
   message: 'You have been directed to a non-existent route.',
 }));
 
-var job = new CronJob('0 */1 * * * *', function() {
-  console.log('You will see this message every 1 minute');
-  sendMail()
-}, null, true, 'America/Los_Angeles');
-job.start();
+// var job = new CronJob('0 */1 * * * *', function() {
+//   console.log('You will see this message every 1 minute');
+//   sendMail()
+// }, null, true, 'America/Los_Angeles');
+// job.start();
 
 export default app;
