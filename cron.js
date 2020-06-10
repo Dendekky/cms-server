@@ -13,6 +13,7 @@ var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 exports.sendMail =
 /*#__PURE__*/
 function () {
+  console.log('cron running');
   var _ref = (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
   _regenerator["default"].mark(function _callee(req, res) {
@@ -22,11 +23,13 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             try {
+              console.log("process got to try block");
               info = (0, _nodeFetch["default"])('http://quotes.rest/qod.json?category=love').then(function (response) {
                 return response.json();
               })["catch"](function (err) {
                 return console.log(err);
               });
+              console.log(info);
               info.then(function (results) {
                 var data = results.contents.quotes.map(function (result) {
                   return result.quote;
@@ -49,7 +52,7 @@ function () {
                 transporter.sendMail({
                   // email options
                   from: "Ibrahim <".concat(process.env.CRON_EMAIL, ">"),
-                  to: 'Lover <praisesubtle@gmail.com>',
+                  to: 'Lover <dendekky@gmail.com>',
                   // receiver
                   subject: 'My Daily Love Snippet',
                   // subject
