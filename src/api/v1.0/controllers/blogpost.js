@@ -1,45 +1,44 @@
 import { check, body, validationResult } from 'express-validator';
 import BlogPost from '../models/blogpost';
 import PostComment from '../models/comments';
-import  parseImage from '../config/multerconfig';
+import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
 exports.createPost = (req, res) => {
-
-  parseImage(req, res, function(err) {
+  parseImage(req, res, (err) => {
     const { title, category, body } = req.body;
 
     if (err) {
-      return res.status(500).send(err)
+      return res.status(500).send(err);
     }
 
     const file = req.files.postImage[0].path;
 
     uploadImage(file)
-    .then((result) => {
-      console.log(result.url);
+      .then((result) => {
+        console.log(result.url);
 
-      const postImage = result.url;
-      const post = new BlogPost({
-        title,
-        category,
-        body,
-        postImage,
-      });
-      console.log(post);
-      post.save((err) => {
-        if (err) {
-          return res.status(500).send({
-            message: 'Internal server error',
-          });
-        }
-        res.status(201).send({
-          success: 'published post to blog',
+        const postImage = result.url;
+        const post = new BlogPost({
+          title,
+          category,
+          body,
+          postImage,
         });
-      });
-    })
-    .catch(err => console.error(err));
-  })
+        console.log(post);
+        post.save((err) => {
+          if (err) {
+            return res.status(500).send({
+              message: 'Internal server error',
+            });
+          }
+          res.status(201).send({
+            success: 'published post to blog',
+          });
+        });
+      })
+      .catch(err => console.error(err));
+  });
 };
 
 exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
@@ -56,7 +55,7 @@ exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
 });
 
 exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
-  .populate("comments")
+  .populate('comments')
   .then((post) => {
     if (!post) {
       return res.status(500).send({
@@ -65,7 +64,7 @@ exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
     }
     return res.status(200).json(post);
   })
-  .catch(function(err) {
+  .catch((err) => {
     res.json(err);
   });
 
@@ -112,20 +111,17 @@ exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (er
 
 exports.createComment = (req, res) => {
   const { name, message, post } = req.body;
-  PostComment.create({name, message, post })
-  .then((comment) => 
-   BlogPost.findOneAndUpdate({ _id: post }, {$push: {comments: comment._id}}, { new: true })
-  )
-  .then((blogpost) => {
-    if (!blogpost) {
-     return res.status(500).send({
-        message: 'Internal server error',
-      });
-    }
-    return res.json(blogpost)
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
-}
-
+  PostComment.create({ name, message, post })
+    .then(comment => BlogPost.findOneAndUpdate({ _id: post }, { $push: { comments: comment._id } }, { new: true }))
+    .then((blogpost) => {
+      if (!blogpost) {
+        return res.status(500).send({
+          message: 'Internal server error',
+        });
+      }
+      return res.json(blogpost);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};

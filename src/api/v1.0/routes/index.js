@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import {
-  createPost, getPost, getAllPosts, updatePost, deletePost, createComment
+  createPost, getPost, getAllPosts, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
 import { updateProfile, getProfile } from '../controllers/userprofile';
 
