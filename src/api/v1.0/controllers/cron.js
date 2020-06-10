@@ -2,9 +2,7 @@ import nodemailer from 'nodemailer';
 import fetch from 'node-fetch';
 
 const sendMail = async (req, res) => {
-  console.log("cron is running")
   try {
-    console.log("we got to try block")
     const info = fetch('http://quotes.rest/qod.json?category=love')
       .then(response => response.json())
       .catch(err => console.log(err));
@@ -24,7 +22,7 @@ const sendMail = async (req, res) => {
       });
       transporter.sendMail({ // email options
         from: `Ibrahim <${process.env.CRON_EMAIL}>`,
-        to: 'Lover <dendekky@gmail.com>', // receiver
+        to: 'Lover <praisesubtle@gmail.com>', // receiver
         subject: 'My Daily Love Snippet', // subject
         html: `<div>
                   <h2>Hello Love,</h2>
@@ -35,13 +33,11 @@ const sendMail = async (req, res) => {
         if (error) {
           console.log(error);
         } else {
-          console.log('Message sent');
           res.status(200).send({ message: 'message sent successfully' });
         }
       });
     });
   } catch (err) {
-    console.log("cron terminated")
     res.status(400).send(err);
   }
 };

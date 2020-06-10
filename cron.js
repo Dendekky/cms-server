@@ -21,10 +21,7 @@ function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log("cron is running");
-
             try {
-              console.log("we got to try block");
               info = (0, _nodeFetch["default"])('http://quotes.rest/qod.json?category=love').then(function (response) {
                 return response.json();
               })["catch"](function (err) {
@@ -53,7 +50,7 @@ function () {
                 transporter.sendMail({
                   // email options
                   from: "Ibrahim <".concat(process.env.CRON_EMAIL, ">"),
-                  to: 'Lover <dendekky@gmail.com>',
+                  to: 'Lover <praisesubtle@gmail.com>',
                   // receiver
                   subject: 'My Daily Love Snippet',
                   // subject
@@ -64,7 +61,6 @@ function () {
                   if (error) {
                     console.log(error);
                   } else {
-                    console.log('Message sent');
                     res.status(200).send({
                       message: 'message sent successfully'
                     });
@@ -72,11 +68,10 @@ function () {
                 });
               });
             } catch (err) {
-              console.log("cron terminated");
               res.status(400).send(err);
             }
 
-          case 2:
+          case 1:
           case "end":
             return _context.stop();
         }
