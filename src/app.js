@@ -3,7 +3,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import { CronJob } from 'cron';
+// import { CronJob } from 'cron';
 // import { sendMail } from './api/v1.0/controllers/cron';
 // import { sendMail }from '../cron'
 import testAPIRouter from './api/v1.0/routes/index';

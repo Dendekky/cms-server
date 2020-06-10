@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 import fetch from 'node-fetch';
 
-exports.sendMail = async (req, res) => {
+const sendMail = async (req, res) => {
+  console.log("cron is running")
   try {
     console.log("we got to try block")
     const info = fetch('http://quotes.rest/qod.json?category=love')
@@ -40,6 +41,9 @@ exports.sendMail = async (req, res) => {
       });
     });
   } catch (err) {
+    console.log("cron terminated")
     res.status(400).send(err);
   }
 };
+
+sendMail();

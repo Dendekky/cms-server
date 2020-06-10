@@ -10,7 +10,7 @@ var _nodemailer = _interopRequireDefault(require("nodemailer"));
 
 var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
-exports.sendMail =
+var sendMail =
 /*#__PURE__*/
 function () {
   var _ref = (0, _asyncToGenerator2["default"])(
@@ -21,6 +21,8 @@ function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            console.log("cron is running");
+
             try {
               console.log("we got to try block");
               info = (0, _nodeFetch["default"])('http://quotes.rest/qod.json?category=love').then(function (response) {
@@ -70,10 +72,11 @@ function () {
                 });
               });
             } catch (err) {
+              console.log("cron terminated");
               res.status(400).send(err);
             }
 
-          case 1:
+          case 2:
           case "end":
             return _context.stop();
         }
@@ -81,7 +84,9 @@ function () {
     }, _callee);
   }));
 
-  return function (_x, _x2) {
+  return function sendMail(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
+
+sendMail();
