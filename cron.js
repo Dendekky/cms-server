@@ -13,7 +13,6 @@ var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 exports.sendMail =
 /*#__PURE__*/
 function () {
-  console.log('cron running');
   var _ref = (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
   _regenerator["default"].mark(function _callee(req, res) {
@@ -23,7 +22,7 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             try {
-              console.log("process got to try block");
+              console.log("we got to try block");
               info = (0, _nodeFetch["default"])('http://quotes.rest/qod.json?category=love').then(function (response) {
                 return response.json();
               })["catch"](function (err) {

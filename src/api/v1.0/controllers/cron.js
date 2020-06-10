@@ -3,9 +3,11 @@ import fetch from 'node-fetch';
 
 exports.sendMail = async (req, res) => {
   try {
+    console.log("we got to try block")
     const info = fetch('http://quotes.rest/qod.json?category=love')
       .then(response => response.json())
       .catch(err => console.log(err));
+    console.log(info)
     info.then((results) => {
       const data = results.contents.quotes.map(result => result.quote);
       console.log(data);
@@ -21,7 +23,7 @@ exports.sendMail = async (req, res) => {
       });
       transporter.sendMail({ // email options
         from: `Ibrahim <${process.env.CRON_EMAIL}>`,
-        to: 'Lover <praisesubtle@gmail.com>', // receiver
+        to: 'Lover <dendekky@gmail.com>', // receiver
         subject: 'My Daily Love Snippet', // subject
         html: `<div>
                   <h2>Hello Love,</h2>
