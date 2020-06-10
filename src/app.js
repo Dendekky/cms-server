@@ -3,8 +3,9 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-// import { CronJob } from 'cron';
-// import { sendMail } from '../cron';
+import { CronJob } from 'cron';
+import { sendMail } from './api/v1.0/controllers/cron';
+// import { sendMail }from '../cron'
 import testAPIRouter from './api/v1.0/routes/index';
 
 require('./api/v1.0/models/index');
@@ -25,10 +26,10 @@ app.get('*', (req, res) => res.status(200).send({
   message: 'You have been directed to a non-existent route.',
 }));
 
-// var job = new CronJob('0 */1 * * * *', function() {
-//   console.log('You will see this message every 1 minute');
-//   sendMail()
-// }, null, true, 'America/Los_Angeles');
-// job.start();
+var job = new CronJob('0 */1 * * * *', function() {
+  console.log('You will see this message every 1 minute');
+  sendMail()
+}, null, true, 'America/Los_Angeles');
+job.start();
 
 export default app;

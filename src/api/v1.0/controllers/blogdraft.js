@@ -1,47 +1,47 @@
 import { check, body, validationResult } from 'express-validator';
 import BlogDraft from '../models/blogdraft';
-import  parseImage from '../config/multerconfig';
+import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
 
 const createDraft = (req, res) => {
   // console.log(req.body);
 
-  parseImage(req, res, function(err) {
+  parseImage(req, res, (err) => {
     const { title, category, body } = req.body;
 
     if (err) {
-      return res.status(500).send(err)
+      return res.status(500).send(err);
     }
-    console.log(req.files)
+    console.log(req.files);
     const file = req.files.postImage[0].path;
-    console.log(file)
+    console.log(file);
 
     uploadImage(file)
-    .then((result) => {
-      console.log(result.url);
+      .then((result) => {
+        console.log(result.url);
 
-      const postImage = result.url;
-      const draft = new BlogDraft({
-        title,
-        category,
-        body,
-        postImage,
-      });
-      // console.log(draft);
-      draft.save((err) => {
-        if (err) {
-          return res.status(500).send({
-            message: 'Internal server error',
-          });
-        }
-        res.status(201).send({
-          success: 'saved to draft',
+        const postImage = result.url;
+        const draft = new BlogDraft({
+          title,
+          category,
+          body,
+          postImage,
         });
-      });
-    })
-    .catch(err => console.error(err));
-  })
+        // console.log(draft);
+        draft.save((err) => {
+          if (err) {
+            return res.status(500).send({
+              message: 'Internal server error',
+            });
+          }
+          res.status(201).send({
+            success: 'saved to draft',
+          });
+        });
+      })
+      .catch(err => console.error(err));
+  });
 };
 
 // const createDraft = [
@@ -157,5 +157,5 @@ module.exports = {
   getAllDrafts,
   getDraft,
   updateDraft,
-  deleteDraft
+  deleteDraft,
 };
