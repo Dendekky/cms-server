@@ -109,19 +109,38 @@ exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (er
   });
 });
 
-exports.createComment = (req, res) => {
-  const { name, message, post } = req.body;
-  PostComment.create({ name, message, post })
-    .then(comment => BlogPost.findOneAndUpdate({ _id: post }, { $push: { comments: comment._id } }, { new: true }))
-    .then((blogpost) => {
-      if (!blogpost) {
-        return res.status(500).send({
-          message: 'Internal server error',
+exports.createComment = async (req, res) => {
+  const { name, message, postId } = req.body;
+  try {
+    const commentData = {
+      name,
+      message,
+      postId,
+    };
+    if ('parentId' in req.body) {
+      commentData.parentId = req.body.parentId;
+    }
+    if ('depth' in req.body) {
+      commentData.depth = req.body.depth;
+    }
+    const postComment = await new PostComment(commentData);
+    const post = await BlogPost.findOneAndUpdate({ _id: postId }, { $push: { comments: comment._id } }, { new: true });
+    if (!post) {
+      return res.status(404).send({
+        message: 'Post not found',
+      });
+    }
+    postComment.save(async (err) => {
+      if (err) {
+        return res.status(400).send({
+          error: err.message,
         });
       }
-      return res.json(blogpost);
-    })
-    .catch((err) => {
-      res.json(err);
+      return res.status(201).send({
+        message: 'Comment added to list',
+      });
     });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };

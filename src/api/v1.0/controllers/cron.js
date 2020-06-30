@@ -6,7 +6,7 @@ const sendMail = async (req, res) => {
     const info = fetch('http://quotes.rest/qod.json?category=love')
       .then(response => response.json())
       .catch(err => console.log(err));
-    console.log(info)
+    console.log(info);
     info.then((results) => {
       const data = results.contents.quotes.map(result => result.quote);
       console.log(data);

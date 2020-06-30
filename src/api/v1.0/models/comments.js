@@ -2,6 +2,18 @@
 import mongoose from 'mongoose';
 
 const commentSchema = mongoose.Schema({
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'PublishedPosts',
+  },
+  depth: {
+    type: Number,
+    default: 1,
+  },
+  parentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: null,
+  },
   name: {
     type: String,
     required: true,
@@ -10,10 +22,7 @@ const commentSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  post: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'PublishedPosts',
-  },
+  postedDate: { type: Date, default: Date.now },
 },
 {
   timestamps: true,
