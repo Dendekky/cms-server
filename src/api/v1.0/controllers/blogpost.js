@@ -124,7 +124,7 @@ exports.createComment = async (req, res) => {
       commentData.depth = req.body.depth;
     }
     const postComment = await new PostComment(commentData);
-    const post = await BlogPost.findOneAndUpdate({ _id: postId }, { $push: { comments: comment._id } }, { new: true });
+    const post = await BlogPost.findOneAndUpdate({ _id: postId }, { $push: { comments: postComment._id } }, { new: true });
     if (!post) {
       return res.status(404).send({
         message: 'Post not found',
