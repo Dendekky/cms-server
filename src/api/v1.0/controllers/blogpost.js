@@ -5,39 +5,34 @@ import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
 exports.createPost = (req, res) => {
-  parseImage(req, res, (err) => {
+  parseImage(req, res, async (err) => {
     const { title, category, body } = req.body;
 
     if (err) {
       return res.status(500).send(err);
     }
 
-    const file = req.files.postImage[0].path;
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
 
-    uploadImage(file)
-      .then((result) => {
-        console.log(result.url);
-
-        const postImage = result.url;
-        const post = new BlogPost({
-          title,
-          category,
-          body,
-          postImage,
+    const postImageFile = file ? await uploadImage(file) : ""
+    const postImage = postImageFile.url || ""
+    const post = new BlogPost({
+      title,
+      category,
+      body,
+      postImage,
+    });
+    console.log(post);
+    post.save((err) => {
+      if (err) {
+        return res.status(500).send({
+          message: 'Internal server error',
         });
-        console.log(post);
-        post.save((err) => {
-          if (err) {
-            return res.status(500).send({
-              message: 'Internal server error',
-            });
-          }
-          res.status(201).send({
-            success: 'published post to blog',
-          });
-        });
-      })
-      .catch(err => console.error(err));
+      }
+      res.status(201).send({
+        success: 'published post to blog',
+      });
+    });
   });
 };
 

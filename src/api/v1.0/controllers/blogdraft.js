@@ -3,44 +3,33 @@ import BlogDraft from '../models/blogdraft';
 import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
-
-const createDraft = (req, res) => {
-  // console.log(req.body);
-
-  parseImage(req, res, (err) => {
+const createDraft = async (req, res) => {
+  parseImage(req, res, async (err) => {
     const { title, category, body } = req.body;
 
     if (err) {
       return res.status(500).send(err);
     }
-    console.log(req.files);
-    const file = req.files.postImage[0].path;
-    console.log(file);
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
 
-    uploadImage(file)
-      .then((result) => {
-        console.log(result.url);
-
-        const postImage = result.url;
-        const draft = new BlogDraft({
-          title,
-          category,
-          body,
-          postImage,
+    const postImageFile = file ? await uploadImage(file) : ""
+    const postImage = postImageFile.url || ""
+    const draft = new BlogDraft({
+      title,
+      category,
+      body,
+      postImage,
+    });
+    draft.save((err) => {
+      if (err) {
+        return res.status(500).send({
+          message: 'Internal server error',
         });
-        // console.log(draft);
-        draft.save((err) => {
-          if (err) {
-            return res.status(500).send({
-              message: 'Internal server error',
-            });
-          }
-          res.status(201).send({
-            success: 'saved to draft',
-          });
-        });
-      })
-      .catch(err => console.error(err));
+      }
+      res.status(201).send({
+        success: 'saved to draft',
+      });
+    });
   });
 };
 
