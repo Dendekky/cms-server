@@ -1,15 +1,14 @@
 import cloudinary from 'cloudinary';
 // import fs from 'fs';
 require('dotenv').config();
-
+import { production } from './config'
 
 cloudinary.config({
-  cloud_name: 'dendekky',
-  api_key: '439755927867787',
-  api_secret: '8TnFlBfebKxIw_Hp8JAM5QDMPBU',
+  cloud_name: production.cloudName,
+  api_key: production.apiKey,
+  api_secret: production.apiSecret,
 });
-
-const uniqueFilename = new Date().toISOString();
+// const uniqueFilename = new Date().toISOString();
 
 exports.uploadImage = file =>
 // cloudinary.uploader.upload(
