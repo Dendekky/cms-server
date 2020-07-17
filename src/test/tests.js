@@ -16,7 +16,7 @@ const blog = {
   category: 'Test',
   body: 'Testing This Guy',
   metadata: 'hello who is the man in the building',
-  postImage: 'well.jpg',
+  // postImage: 'well.jpg',
 };
 const draft = new BlogDraft(blog);
 
