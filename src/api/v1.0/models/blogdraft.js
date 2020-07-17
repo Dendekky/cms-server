@@ -15,6 +15,9 @@ const draftSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
+  tags: {
+    type: Array,
+  },
   postImage: {
     type: String,
   },

@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "mocha --require @babel/register 'src/test/**/*.js' --recursive --timeout 30000",
+    "test": "mocha --require @babel/register 'src/test/**/*.js' --recursive --timeout 30000 --exit",
     "start": "npm run prod",
     "heroku-postbuild": "npm install --production",
     "dev": "cross-env NODE_ENV=development DEBUG=mm-api:server npm run watch ./src/bin/www",
