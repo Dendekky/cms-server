@@ -10,7 +10,7 @@ const createDraft = async (req, res) => {
     if (err) {
       return res.status(500).send(err);
     }
-    const file = req.files.postImage ? req.files.postImage[0].path : "";
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
 
     const postImageFile = file ? await uploadImage(file) : ""
     const postImage = postImageFile.url || ""
