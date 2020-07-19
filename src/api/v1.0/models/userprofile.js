@@ -22,6 +22,15 @@ const userSchema = mongoose.Schema({
     type: String,
     trim: true,
   },
+  energy: {
+    type: Number,
+  },
+  twitter: {
+    type: String,
+  },
+  instagram: {
+    type: String,
+  }
 });
 
 const UserProfile = mongoose.model('UserProfile', userSchema);
