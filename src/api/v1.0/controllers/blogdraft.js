@@ -11,8 +11,8 @@ const createDraft = async (req, res) => {
       return res.status(500).send(err);
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
-    const postImageFile = file ? await uploadImage(file) : ""
-    const postImage = (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) || ""
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : ""
+    const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) : ""
     const draft = new BlogDraft({
       title,
       category,
@@ -45,19 +45,19 @@ const updateDraft = async (req, res) => {
       const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) : postImageFile
       console.log(postImage)
       const data = { title, category, body, postImage }
-      // BlogDraft.findByIdAndUpdate(
-      //   req.params.id, data,
-      //   { upsert: true }, (err, draft) => {
-      //     if (err) {
-      //       return res.status(500).send({
-      //         message: err.message,
-      //       });
-      //     }
-      //     res.status(201).send({
-      //       message: draft,
-      //     });
-      //   },
-      // );
+      BlogDraft.findByIdAndUpdate(
+        req.params.id, data,
+        { upsert: true }, (err, draft) => {
+          if (err) {
+            return res.status(500).send({
+              message: err.message,
+            });
+          }
+          res.status(201).send({
+            message: draft,
+          });
+        },
+      );
   })
 };
 
