@@ -11,11 +11,10 @@ exports.createPost = (req, res) => {
     if (err) {
       return res.status(500).send(err);
     }
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
+    const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) : postImageFile
 
-    const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
-
-    const postImageFile = file ? await uploadImage(file) : ""
-    const postImage = postImageFile.url || ""
     const post = new BlogPost({
       title,
       category,
@@ -26,7 +25,7 @@ exports.createPost = (req, res) => {
     post.save((err) => {
       if (err) {
         return res.status(500).send({
-          message: 'Internal server error',
+          message: err.message,
         });
       }
       res.status(201).send({
@@ -38,9 +37,9 @@ exports.createPost = (req, res) => {
 
 exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
   if (err) {
-    res.status(500).send({
+    return res.status(500).send({
       status: 500,
-      message: 'Internal server error',
+      message: err.message,
     });
   }
   res.status(200).send({
@@ -60,43 +59,40 @@ exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
     return res.status(200).json(post);
   })
   .catch((err) => {
-    res.json(err);
+    res.send(err.message);
   });
 
-exports.updatePost = [
-  check('title').isLength({ min: 3 }).withMessage('Please input a title'),
-  body('category').isLength({ min: 3 }).withMessage('input category'),
-  check('body').isLength({ min: 3 }).withMessage('Please input the blog'),
+exports.updatePost= async (req, res) => {
+  parseImage(req, res, async (err) => {
+    const { title, category, body } = req.body;
 
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(406).send({
-        errors: errors.array(),
-        status: 406,
-      });
-    } else {
-      BlogPost.findByIdAndUpdate(
-        req.params.id, req.body,
-        { upsert: true }, (err, post) => {
-          if (err) {
-            res.status(500).send({
-              message: 'Internal server error',
-            });
-          }
-          res.status(201).send({
-            message: 'update successful',
-          });
-        },
-      );
+    if (err) {
+      return res.status(500).send(err.message);
     }
-  },
-];
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
+    const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) : postImageFile
+    const data = { title, category, body, postImage }
+    BlogPost.findByIdAndUpdate(
+      req.params.id, data,
+      { upsert: true }, (err, post) => {
+        if (err) {
+          return res.status(500).send({
+            message: err.message,
+          });
+        }
+        res.status(201).send({
+          message: post,
+        });
+      },
+    );
+})
+};
 
 exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (err, del) => {
   if (err) {
     res.status(500).send({
-      message: 'Internal server error',
+      message: err.message,
     });
   }
   res.status(200).send({
