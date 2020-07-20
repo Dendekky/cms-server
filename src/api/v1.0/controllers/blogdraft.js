@@ -11,9 +11,8 @@ const createDraft = async (req, res) => {
       return res.status(500).send(err);
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
-
     const postImageFile = file ? await uploadImage(file) : ""
-    const postImage = postImageFile.url || ""
+    const postImage = (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) || ""
     const draft = new BlogDraft({
       title,
       category,
@@ -43,7 +42,7 @@ const updateDraft = async (req, res) => {
       }
       const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
       const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
-      const postImage = postImageFile.url || postImageFile
+      const postImage = (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) || postImageFile
       const data = { title, category, body, postImage }
       BlogDraft.findByIdAndUpdate(
         req.params.id, data,

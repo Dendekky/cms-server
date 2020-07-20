@@ -13,7 +13,7 @@ exports.createPost = (req, res) => {
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
-    const postImage = postImageFile.url || postImageFile
+    const postImage = (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) || postImageFile
 
     const post = new BlogPost({
       title,
@@ -71,7 +71,7 @@ exports.updatePost= async (req, res) => {
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
-    const postImage = postImageFile.url || postImageFile
+    const postImage = (postImageFile.url.substr(0, 47) + "/w_500,q_auto" + postImageFile.url.substr(47)) || postImageFile
     const data = { title, category, body, postImage }
     BlogPost.findByIdAndUpdate(
       req.params.id, data,
