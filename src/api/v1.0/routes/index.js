@@ -3,6 +3,7 @@ import {
   createPost, getPost, getAllPosts, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
 import { updateProfile, getProfile } from '../controllers/userprofile';
+import { gAnalytics } from '../controllers/analytics'
 
 const authController = require('../controllers').users;
 const draftController = require('../controllers').blogdraft;
@@ -13,6 +14,8 @@ module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
     message: 'Welcome to the  Beenah API!',
   }));
+
+  app.get('/api/analytics', gAnalytics);
 
   app.post('/api/login', authController.login);
   app.put('/api/user', updateProfile);
