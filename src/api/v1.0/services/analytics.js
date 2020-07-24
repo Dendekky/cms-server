@@ -4,7 +4,7 @@ require('dotenv').config();
 // http://localhost:5000/api/analytics?metrics=pageviews,users,sessions&dimensions=ga:pagePath,country,browser,userType
 
 const clientEmail = process.env.CLIENT_EMAIL;
-const privateKey = process.env.PRIVATE_KEY.replace(new RegExp('\\\\n'), '\n');
+const privateKey = process.env.PRIVATE_KEY..replace(/\n\s+/g, "\n");
 const scopes = ['https://www.googleapis.com/auth/analytics.readonly'];
 
 const analytics = google.analytics('v3');
