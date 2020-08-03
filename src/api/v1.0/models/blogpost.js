@@ -16,14 +16,16 @@ const postSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  metadata: {
-    type: String,
-    required: true,
-    trim: true,
+  tags: {
+    type: Array,
   },
   postImage: {
     type: String,
   },
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'PostComments',
+  }],
 },
 {
   timestamps: true,

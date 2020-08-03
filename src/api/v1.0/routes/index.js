@@ -1,20 +1,27 @@
 /* eslint-disable linebreak-style */
 import {
-  createPost, getPost, getAllPosts, updatePost, deletePost,
+  createPost, getPost, getAllPosts, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
+import { updateProfile, getProfile } from '../controllers/userprofile';
+import { gAnalytics } from '../controllers/analytics';
 
 const authController = require('../controllers').users;
 const draftController = require('../controllers').blogdraft;
 const authMiddleware = require('../middlewares/auth');
+
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
     message: 'Welcome to the  Beenah API!',
   }));
 
+  app.get('/api/analytics', gAnalytics);
+
   app.post('/api/login', authController.login);
-  app.post('/api/register', authController.register);
-  app.get('/api/users', authController.userList);
+  app.put('/api/user', updateProfile);
+  app.get('/api/user', getProfile);
+  // app.post('/api/register', authController.register);
+  // app.get('/api/users', authController.userList);
   // Drafts routes
   app.post('/api/draft', draftController.createDraft);
   app.get('/api/draft/:id', draftController.getDraft);
@@ -27,6 +34,8 @@ module.exports = (app) => {
   app.get('/api/post/:id', getPost);
   app.put('/api/post/:id', updatePost);
   app.delete('/api/post/:id', deletePost);
+  // Comment routes
+  app.post('/api/comment', createComment);
 
   app.get('/api/checkToken', authMiddleware.checkAuth, (req, res) => {
     res.sendStatus(200);

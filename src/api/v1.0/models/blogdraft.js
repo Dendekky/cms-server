@@ -9,17 +9,14 @@ const draftSchema = mongoose.Schema({
   },
   body: {
     type: String,
-    required: true,
   },
   category: {
     type: String,
     required: true,
     trim: true,
   },
-  metadata: {
-    type: String,
-    required: true,
-    trim: true,
+  tags: {
+    type: Array,
   },
   postImage: {
     type: String,
