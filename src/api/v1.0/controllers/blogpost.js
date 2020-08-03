@@ -49,12 +49,39 @@ exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
 });
 
 exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
+  .lean()
   .populate('comments')
   .then((post) => {
     if (!post) {
       return res.status(500).send({
         message: 'Internal server error',
       });
+    }
+    if (post && post.comments) {
+        const rec = (comment, threads) => {
+          for (var thread in threads) {
+            let value = threads[thread];
+            if (thread.toString() === comment.parentId.toString()) {
+                value.children[comment._id] = comment;
+                return;
+            }
+            if (value.children) {
+                rec(comment, value.children)
+            }
+          }
+        }
+        let threads = {}, comment
+        for (let i=0; i < post.comments.length; i++) {
+            comment = post.comments[i]
+            comment['children'] = {}
+            let parentId = comment.parentId
+            if (!parentId) {
+                threads[comment._id] = comment
+                continue
+            }
+          rec(comment, threads)
+        }
+        post.comments = threads
     }
     return res.status(200).json(post);
   })
