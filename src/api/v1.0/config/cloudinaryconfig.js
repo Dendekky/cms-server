@@ -1,7 +1,7 @@
 import cloudinary from 'cloudinary';
+import { production } from './config';
 // import fs from 'fs';
 require('dotenv').config();
-import { production } from './config'
 
 cloudinary.config({
   cloud_name: production.cloudName,

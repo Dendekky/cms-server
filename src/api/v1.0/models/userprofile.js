@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema({
   },
   instagram: {
     type: String,
-  }
+  },
 });
 
 const UserProfile = mongoose.model('UserProfile', userSchema);

@@ -11,9 +11,9 @@ exports.createPost = (req, res) => {
     if (err) {
       return res.status(500).send(err);
     }
-    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
-    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
-    const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/q_auto,f_auto" + postImageFile.url.substr(47)) : postImageFile
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
+    const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
 
     const post = new BlogPost({
       title,
@@ -58,30 +58,31 @@ exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
       });
     }
     if (post && post.comments) {
-        const rec = (comment, threads) => {
-          for (var thread in threads) {
-            let value = threads[thread];
-            if (thread.toString() === comment.parentId.toString()) {
-                value.children[comment._id] = comment;
-                return;
-            }
-            if (value.children) {
-                rec(comment, value.children)
-            }
+      const rec = (comment, threads) => {
+        for (const thread in threads) {
+          const value = threads[thread];
+          if (thread.toString() === comment.parentId.toString()) {
+            value.children[comment._id] = comment;
+            return;
+          }
+          if (value.children) {
+            rec(comment, value.children);
           }
         }
-        let threads = {}, comment
-        for (let i=0; i < post.comments.length; i++) {
-            comment = post.comments[i]
-            comment['children'] = {}
-            let parentId = comment.parentId
-            if (!parentId) {
-                threads[comment._id] = comment
-                continue
-            }
-          rec(comment, threads)
+      };
+      const threads = {}; let
+        comment;
+      for (let i = 0; i < post.comments.length; i++) {
+        comment = post.comments[i];
+        comment.children = {};
+        const { parentId } = comment;
+        if (!parentId) {
+          threads[comment._id] = comment;
+          continue;
         }
-        post.comments = threads
+        rec(comment, threads);
+      }
+      post.comments = threads;
     }
     return res.status(200).json(post);
   })
@@ -89,17 +90,19 @@ exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
     res.send(err.message);
   });
 
-exports.updatePost= async (req, res) => {
+exports.updatePost = async (req, res) => {
   parseImage(req, res, async (err) => {
     const { title, category, body } = req.body;
 
     if (err) {
       return res.status(500).send(err.message);
     }
-    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
-    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
-    const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/q_auto,f_auto" + postImageFile.url.substr(47)) : postImageFile
-    const data = { title, category, body, postImage }
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
+    const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
+    const data = {
+      title, category, body, postImage,
+    };
     BlogPost.findByIdAndUpdate(
       req.params.id, data,
       { upsert: true }, (err, post) => {
@@ -113,7 +116,7 @@ exports.updatePost= async (req, res) => {
         });
       },
     );
-})
+  });
 };
 
 exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (err, del) => {

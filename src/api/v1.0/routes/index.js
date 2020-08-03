@@ -3,7 +3,7 @@ import {
   createPost, getPost, getAllPosts, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
 import { updateProfile, getProfile } from '../controllers/userprofile';
-import { gAnalytics } from '../controllers/analytics'
+import { gAnalytics } from '../controllers/analytics';
 
 const authController = require('../controllers').users;
 const draftController = require('../controllers').blogdraft;

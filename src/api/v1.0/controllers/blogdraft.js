@@ -10,9 +10,9 @@ const createDraft = async (req, res) => {
     if (err) {
       return res.status(500).send(err);
     }
-    const file = req.files && req.files.postImage ? req.files.postImage[0].path : "";
-    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : ""
-    const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/q_auto,f_auto" + postImageFile.url.substr(47)) : ""
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : '';
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : '';
+    const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : '';
     const draft = new BlogDraft({
       title,
       category,
@@ -34,31 +34,33 @@ const createDraft = async (req, res) => {
 
 
 const updateDraft = async (req, res) => {
-    parseImage(req, res, async (err) => {
-      const { title, category, body } = req.body;
-  
-      if (err) {
-        return res.status(500).send(err);
-      }
-      const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;  
-      const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file
-      const postImage = req.files && req.files.postImage ? (postImageFile.url.substr(0, 47) + "/q_auto,f_auto" + postImageFile.url.substr(47)) : postImageFile
-      console.log(postImage)
-      const data = { title, category, body, postImage }
-      BlogDraft.findByIdAndUpdate(
-        req.params.id, data,
-        { upsert: true }, (err, draft) => {
-          if (err) {
-            return res.status(500).send({
-              message: err.message,
-            });
-          }
-          res.status(201).send({
-            message: draft,
+  parseImage(req, res, async (err) => {
+    const { title, category, body } = req.body;
+
+    if (err) {
+      return res.status(500).send(err);
+    }
+    const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
+    const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
+    const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
+    console.log(postImage);
+    const data = {
+      title, category, body, postImage,
+    };
+    BlogDraft.findByIdAndUpdate(
+      req.params.id, data,
+      { upsert: true }, (err, draft) => {
+        if (err) {
+          return res.status(500).send({
+            message: err.message,
           });
-        },
-      );
-  })
+        }
+        res.status(201).send({
+          message: draft,
+        });
+      },
+    );
+  });
 };
 
 const getAllDrafts = (req, res) => BlogDraft.find({}, (err, drafts) => {
