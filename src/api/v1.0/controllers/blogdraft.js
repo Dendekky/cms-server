@@ -5,7 +5,9 @@ import { uploadImage } from '../config/cloudinaryconfig';
 
 const createDraft = async (req, res) => {
   parseImage(req, res, async (err) => {
-    const { title, category, body } = req.body;
+    const {
+      title, category, body, tags,
+    } = req.body;
 
     if (err) {
       return res.status(500).send(err);
@@ -13,9 +15,12 @@ const createDraft = async (req, res) => {
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : '';
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : '';
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : '';
+    const postTags = tags.split(',');
+
     const draft = new BlogDraft({
       title,
       category,
+      tags: postTags,
       body,
       postImage,
     });
@@ -35,7 +40,9 @@ const createDraft = async (req, res) => {
 
 const updateDraft = async (req, res) => {
   parseImage(req, res, async (err) => {
-    const { title, category, body } = req.body;
+    const {
+      title, category, body, tags,
+    } = req.body;
 
     if (err) {
       return res.status(500).send(err);
@@ -43,9 +50,10 @@ const updateDraft = async (req, res) => {
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
-    console.log(postImage);
+    const postTags = tags.split(',');
+
     const data = {
-      title, category, body, postImage,
+      title, category, body, postImage, tags: postTags,
     };
     BlogDraft.findByIdAndUpdate(
       req.params.id, data,
