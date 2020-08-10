@@ -15,7 +15,7 @@ const createDraft = async (req, res) => {
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : '';
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : '';
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : '';
-    const postTags = tags.split(',');
+    const postTags = tags ? tags.split(',') : [];
 
     const draft = new BlogDraft({
       title,
@@ -50,7 +50,7 @@ const updateDraft = async (req, res) => {
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
-    const postTags = tags.split(',');
+    const postTags = tags ? tags.split(',') : [];
 
     const data = {
       title, category, body, postImage, tags: postTags,
