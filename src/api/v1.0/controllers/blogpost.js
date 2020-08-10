@@ -6,7 +6,9 @@ import { uploadImage } from '../config/cloudinaryconfig';
 
 exports.createPost = (req, res) => {
   parseImage(req, res, async (err) => {
-    const { title, category, body } = req.body;
+    const {
+      title, category, body, tags,
+    } = req.body;
 
     if (err) {
       return res.status(500).send(err);
@@ -14,14 +16,15 @@ exports.createPost = (req, res) => {
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
+    const postTags = tags ? tags.split(',') : [];
 
     const post = new BlogPost({
       title,
       category,
+      tags: postTags,
       body,
       postImage,
     });
-    console.log(post);
     post.save((err) => {
       if (err) {
         return res.status(500).send({
@@ -48,14 +51,20 @@ exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
   });
 });
 
-exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
-  .lean()
-  .populate('comments')
-  .then((post) => {
+exports.getPost = async (req, res) => {
+  try {
+    const post = await BlogPost.findOne({ _id: req.params.id })
+      .lean()
+      .populate('comments');
     if (!post) {
       return res.status(500).send({
         message: 'Internal server error',
       });
+    }
+    if (post) {
+      const allPost = await BlogPost.find();
+      const relatedPosts = allPost.filter(blogpost => blogpost.tags.some(val => post.tags.includes(val)));
+      post.relatedPosts = relatedPosts;
     }
     if (post && post.comments) {
       const rec = (comment, threads) => {
@@ -85,10 +94,10 @@ exports.getPost = (req, res) => BlogPost.findOne({ _id: req.params.id })
       post.comments = threads;
     }
     return res.status(200).json(post);
-  })
-  .catch((err) => {
+  } catch (err) {
     res.send(err.message);
-  });
+  }
+};
 
 exports.updatePost = async (req, res) => {
   parseImage(req, res, async (err) => {
