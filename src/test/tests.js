@@ -14,9 +14,9 @@ chai.use(chaiHttp);
 const blog = {
   title: 'Hello World',
   category: 'Test',
-  body: 'Testing This Guy',
-  metadata: 'hello who is the man in the building',
-  // postImage: 'well.jpg',
+  body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata saDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. nctus est Lorem ipsum dolor sit amet. ',
+  tags: "wood, death",
+  postImage: 'https://res.cloudinary.com/dendekky/image/upload/c_scale,q_50,w_520/v1587909742/ijss7cmhrbnecx8n8mcr.png',
 };
 const draft = new BlogDraft(blog);
 
@@ -40,7 +40,7 @@ describe('Mm server', async () => {
       it('it should save a draft', (done) => {
         chai.request(server)
           .post('/api/draft/')
-          .send(draft)
+          .send(blog)
           .end((err, res) => {
             res.should.have.status(201);
             expect(res.body).to.deep.equal({ success: 'saved to draft' });
@@ -51,21 +51,20 @@ describe('Mm server', async () => {
 
     describe('Update draft', () => {
       it('it should update a draft', (done) => {
-        draft.save((err, draft) => {
+        // draft.save((err, draft) => {
           chai.request(server)
             .put(`/api/draft/${draft.id}`)
             .send({
               title: 'The Chronicles of Narnia',
               category: 'Test',
-              body: 'Testing This Guy',
-              metadata: 'hello who is the man in the building',
+              body: 'Hello who is the man in the building',
             })
             .end((err, res) => {
               res.should.have.status(201);
               // expect(res.body).to.deep.equal({ message: 'update successful' });
               done();
             });
-        });
+        // });
       });
     });
 
