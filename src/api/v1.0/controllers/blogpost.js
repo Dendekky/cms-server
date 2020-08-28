@@ -51,6 +51,32 @@ exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
   });
 });
 
+exports.getPostsByTag = (req, res) => BlogPost.find({ tags: { $in: [req.params.tag] }}, (err, posts) => {
+  if (err) {
+    return res.status(500).send({
+      status: 500,
+      message: err.message,
+    });
+  }
+  res.status(200).send({
+    status: 200,
+    posts,
+  });
+});
+
+exports.getPostsByCategory = (req, res) => BlogPost.find({ category: req.params.category }, (err, posts) => {
+  if (err) {
+    return res.status(500).send({
+      status: 500,
+      message: err.message,
+    });
+  }
+  res.status(200).send({
+    status: 200,
+    posts,
+  });
+});
+
 exports.getPost = async (req, res) => {
   try {
     const post = await BlogPost.findOne({ _id: req.params.id })
