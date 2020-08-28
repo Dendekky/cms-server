@@ -14,6 +14,17 @@ const checkAuth = (req, res, next) => {
     next();
   });
 };
+
+const sessionChecker = (req, res, next) => {
+  console.log("cookies:", req.cookies, "cookie:", req.cookie, "session:", req.session)
+  if (!req.session && !req.cookies) {
+    return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+  } else {
+      next();
+  }    
+};
+
 module.exports = {
   checkAuth,
+  sessionChecker
 };

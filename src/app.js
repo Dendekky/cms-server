@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import session from 'express-session'
 import logger from 'morgan';
 import cors from 'cors';
 // import { CronJob } from 'cron';
@@ -19,6 +20,21 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(cors());
+app.use(session({
+  key: 'token',
+  secret: 'dfdakdsbfudshfsuiofh89wefheyh9dhafecdusohcaidcehuh8cdoahcods',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      expires: 600000
+  }
+}));
+app.use((req, res, next) => {
+  if (req.cookies.token && !req.session.user) {
+      res.clearCookie('token');        
+  }
+  next();
+});
 app.use('/testAPI', testAPIRouter);
 require('./api/v1.0/routes')(app);
 

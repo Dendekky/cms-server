@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import {
-  createPost, getPost, getAllPosts, updatePost, deletePost, createComment,
+  createPost, getPost, getAllPosts, getPostsByTag, getPostsByCategory, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
 import { updateProfile, getProfile } from '../controllers/userprofile';
 import { gAnalytics } from '../controllers/analytics';
@@ -32,6 +32,8 @@ module.exports = (app) => {
   app.get('/api/post', getAllPosts);
   app.post('/api/post', createPost);
   app.get('/api/post/:id', getPost);
+  app.get('/api/posts/tags/:tag', getPostsByTag);
+  app.get('/api/posts/categories/:category', getPostsByCategory);
   app.put('/api/post/:id', updatePost);
   app.delete('/api/post/:id', deletePost);
   // Comment routes
