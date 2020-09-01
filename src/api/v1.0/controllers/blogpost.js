@@ -26,7 +26,7 @@ exports.createPost = (req, res) => {
       body,
       postImage,
     });
-    post.save((err) => {
+    post.save(async (err) => {
       if (err) {
         return res.status(500).send({
           message: err.message,
