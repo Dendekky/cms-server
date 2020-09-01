@@ -16,7 +16,7 @@ const createDraft = async (req, res) => {
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : '';
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : '';
     const postTags = tags ? tags.split(',') : [];
-    console.log(postTags)
+    console.log(postTags);
     const draft = new BlogDraft({
       title,
       category,

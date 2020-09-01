@@ -2,6 +2,7 @@
 import {
   createPost, getPost, getAllPosts, getPostsByTag, getPostsByCategory, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
+import { addSubscriber, getAllSubscribers } from '../controllers/subscriber';
 import { updateProfile, getProfile } from '../controllers/userprofile';
 import { gAnalytics } from '../controllers/analytics';
 
@@ -22,12 +23,14 @@ module.exports = (app) => {
   app.get('/api/user', getProfile);
   // app.post('/api/register', authController.register);
   // app.get('/api/users', authController.userList);
+
   // Drafts routes
   app.post('/api/draft', draftController.createDraft);
   app.get('/api/draft/:id', draftController.getDraft);
   app.put('/api/draft/:id', draftController.updateDraft);
   app.delete('/api/draft/:id', draftController.deleteDraft);
   app.get('/api/draft', draftController.getAllDrafts);
+
   // Posts routes
   app.get('/api/post', getAllPosts);
   app.post('/api/post', createPost);
@@ -36,6 +39,11 @@ module.exports = (app) => {
   app.get('/api/posts/categories/:category', getPostsByCategory);
   app.put('/api/post/:id', updatePost);
   app.delete('/api/post/:id', deletePost);
+
+  // Subscriber routes
+  app.get('/api/subscribers', getAllSubscribers);
+  app.post('/api/subscribers', addSubscriber);
+
   // Comment routes
   app.post('/api/comment', createComment);
 

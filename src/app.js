@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-import session from 'express-session'
+import session from 'express-session';
 import logger from 'morgan';
 import cors from 'cors';
 // import { CronJob } from 'cron';
@@ -26,12 +26,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-      expires: 600000
-  }
+    expires: 600000,
+  },
 }));
 app.use((req, res, next) => {
   if (req.cookies.token && !req.session.user) {
-      res.clearCookie('token');        
+    res.clearCookie('token');
   }
   next();
 });
