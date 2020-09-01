@@ -3,6 +3,7 @@ import BlogPost from '../models/blogpost';
 import PostComment from '../models/comments';
 import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
+import { sendNewCommentNotificationEmail, sendNewPostNotificationEmail } from '../services/mails';
 
 exports.createPost = (req, res) => {
   parseImage(req, res, async (err) => {
@@ -31,6 +32,7 @@ exports.createPost = (req, res) => {
           message: err.message,
         });
       }
+      sendNewPostNotificationEmail(title, post._id)
       res.status(201).send({
         success: 'published post to blog',
       });
@@ -51,7 +53,7 @@ exports.getAllPosts = (req, res) => BlogPost.find({}, (err, posts) => {
   });
 });
 
-exports.getPostsByTag = (req, res) => BlogPost.find({ tags: { $in: [req.params.tag] }}, (err, posts) => {
+exports.getPostsByTag = (req, res) => BlogPost.find({ tags: { $in: [req.params.tag] } }, (err, posts) => {
   if (err) {
     return res.status(500).send({
       status: 500,
@@ -91,7 +93,7 @@ exports.getPost = async (req, res) => {
       const allPost = await BlogPost.find();
       const relatedPosts = allPost.filter(blogpost => blogpost.tags.some(val => post.tags.includes(val)));
       post.relatedPosts = relatedPosts;
-      post.commentsLength = post.comments.length
+      post.commentsLength = post.comments.length;
     }
     if (post && post.comments) {
       const rec = (comment, threads) => {
@@ -128,7 +130,9 @@ exports.getPost = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
   parseImage(req, res, async (err) => {
-    const { title, category, body, tags } = req.body;
+    const {
+      title, category, body, tags,
+    } = req.body;
 
     if (err) {
       return res.status(500).send(err.message);
@@ -137,7 +141,7 @@ exports.updatePost = async (req, res) => {
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
     const data = {
-      title, category, body, postImage, tags
+      title, category, body, postImage, tags,
     };
     BlogPost.findByIdAndUpdate(
       req.params.id, data,
@@ -167,7 +171,7 @@ exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (er
 });
 
 exports.createComment = async (req, res) => {
-  const { name, message, postId } = req.body;
+  const { name, message, postId, postTitle } = req.body;
   try {
     const commentData = {
       name,
@@ -193,6 +197,7 @@ exports.createComment = async (req, res) => {
           error: err.message,
         });
       }
+      sendNewCommentNotificationEmail(name, message, postTitle, postId)
       return res.status(201).send({
         message: 'Comment added to list',
       });
