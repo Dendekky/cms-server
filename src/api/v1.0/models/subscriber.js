@@ -1,6 +1,6 @@
 // /* eslint-disable linebreak-style */
 import mongoose from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator'
+import uniqueValidator from 'mongoose-unique-validator';
 
 const subscriberSchema = mongoose.Schema({
   email: {
@@ -13,7 +13,7 @@ const subscriberSchema = mongoose.Schema({
   timestamps: true,
 });
 
-subscriberSchema.plugin(uniqueValidator)
+subscriberSchema.plugin(uniqueValidator);
 
 const Subscriber = mongoose.model('Subscribers', subscriberSchema);
 

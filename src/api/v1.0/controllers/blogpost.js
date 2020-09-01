@@ -32,7 +32,7 @@ exports.createPost = (req, res) => {
           message: err.message,
         });
       }
-      sendNewPostNotificationEmail(title, post._id)
+      await sendNewPostNotificationEmail(title, post._id)
       res.status(201).send({
         success: 'published post to blog',
       });
