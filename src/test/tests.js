@@ -43,7 +43,7 @@ describe('Mm server', async () => {
           .send(blog)
           .end((err, res) => {
             res.should.have.status(201);
-            expect(res.body).to.deep.equal({ success: 'saved to draft' });
+            expect(res.body).to.deep.equal({ message: 'saved to draft' });
             done();
           });
       });

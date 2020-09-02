@@ -16,7 +16,6 @@ const createDraft = async (req, res) => {
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : '';
     const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : '';
     const postTags = tags ? tags.split(',') : [];
-    console.log(postTags);
     const draft = new BlogDraft({
       title,
       category,
@@ -31,7 +30,7 @@ const createDraft = async (req, res) => {
         });
       }
       res.status(201).send({
-        success: 'saved to draft',
+        message: 'saved to draft',
       });
     });
   });
@@ -45,7 +44,7 @@ const updateDraft = async (req, res) => {
     } = req.body;
 
     if (err) {
-      return res.status(500).send(err);
+      return res.status(500).send({ message: err.message });
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
