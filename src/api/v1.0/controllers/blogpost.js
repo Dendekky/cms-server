@@ -34,7 +34,7 @@ exports.createPost = (req, res) => {
       }
       await sendNewPostNotificationEmail(title, post._id)
       res.status(201).send({
-        success: 'published post to blog',
+        message: 'published post to blog',
       });
     });
   });
@@ -124,7 +124,7 @@ exports.getPost = async (req, res) => {
     }
     return res.status(200).json(post);
   } catch (err) {
-    res.send(err.message);
+    res.send({ message: err.message });
   }
 };
 
@@ -135,7 +135,7 @@ exports.updatePost = async (req, res) => {
     } = req.body;
 
     if (err) {
-      return res.status(500).send(err.message);
+      return res.status(500).send({ message: err.message });
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
@@ -194,7 +194,7 @@ exports.createComment = async (req, res) => {
     postComment.save(async (err) => {
       if (err) {
         return res.status(400).send({
-          error: err.message,
+          message: err.message,
         });
       }
       sendNewCommentNotificationEmail(name, message, postTitle, postId)

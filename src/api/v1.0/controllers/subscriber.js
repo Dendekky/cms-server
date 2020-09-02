@@ -25,7 +25,7 @@ exports.addSubscriber = [
             });
           }
           res.status(201).send({
-            success: 'user added to subscribers list',
+            message: 'user added to subscribers list',
           });
         });
       } catch (err) {
