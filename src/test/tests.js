@@ -4,6 +4,8 @@ import BlogPost from '../api/v1.0/models/blogpost';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const assertArrays = require('chai-arrays');
+
+process.env.NODE_ENV = 'test'
 const server = require('../bin/www');
 
 const should = chai.should();
@@ -105,61 +107,59 @@ describe('Mm server', async () => {
   });
 
   describe('Test for BlogPosts', () => {
-    // describe('save post', () => {
-    //   it('it should save a post', (done) => {
-    //     chai.request(server)
-    //       .post('/api/post/')
-    //       .send(post)
-    //       .end((err, res) => {
-    //         res.should.have.status(201);
-    //         expect(res.body).to.deep.equal({ success: 'published post to blog' });
-    //         done();
-    //       });
-    //   });
-    // });
+    describe('save post', () => {
+      it('it should save a post', (done) => {
+        chai.request(server)
+          .post('/api/post/')
+          .send(blog)
+          .end((err, res) => {
+            res.should.have.status(201);
+            expect(res.body).to.deep.equal({ message: 'published post to blog' });
+            done();
+          });
+      });
+    });
 
-    // describe('Update post', () => {
-    //   it('it should update a post', (done) => {
-    //     post.save((err, post) => {
-    //       chai.request(server)
-    //         .put(`/api/post/${post.id}`)
-    //         .send({
-    //           title: 'The Chronicles of Narnia',
-    //           category: 'Test',
-    //           body: 'Testing This Guy',
-    //           metadata: 'hello who is the man in the building',
-    //         })
-    //         .end((err, res) => {
-    //           res.should.have.status(201);
-    //           // expect(res.body).to.deep.equal({ message: 'update successful' });
-    //           done();
-    //         });
-    //     });
-    //   });
-    // });
+    describe('Update post', () => {
+      it('it should update a post', (done) => {
+        post.save((err, post) => {
+          chai.request(server)
+            .put(`/api/post/${post.id}`)
+            .send({
+              title: 'The Chronicles of Harry Potter',
+              category: 'Blog',
+              body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata saDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. nctus est Lorem ipsum dolor sit amet. ',
+            })
+            .end((err, res) => {
+              res.should.have.status(201);
+              done();
+            });
+        });
+      });
+    });
 
-    // describe('Get post', () => {
-    //   it('it should get a draft', (done) => {
-    //     chai.request(server)
-    //       .get(`/api/post/${post.id}`)
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         done();
-    //       });
-    //   });
-    // });
+    describe('Get post', () => {
+      it('it should get a draft', (done) => {
+        chai.request(server)
+          .get(`/api/post/${post.id}`)
+          .end((err, res) => {
+            res.should.have.status(200);
+            done();
+          });
+      });
+    });
 
-    // describe('Delete post', () => {
-    //   it('it should delete a post', (done) => {
-    //     chai.request(server)
-    //       .delete(`/api/post/${post.id}`)
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         expect(res.body).to.deep.equal({ message: 'post deleted' });
-    //         done();
-    //       });
-    //   });
-    // });
+    describe('Delete post', () => {
+      it('it should delete a post', (done) => {
+        chai.request(server)
+          .delete(`/api/post/${post.id}`)
+          .end((err, res) => {
+            res.should.have.status(200);
+            expect(res.body).to.deep.equal({ message: 'post deleted' });
+            done();
+          });
+      });
+    });
 
     describe('All Posts', () => {
       it('it should get all posts', (done) => {
