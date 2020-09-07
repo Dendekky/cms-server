@@ -1,9 +1,21 @@
-import { check, body, validationResult } from 'express-validator';
+// import { check, body, validationResult } from 'express-validator';
+import fetch from 'node-fetch';
 import BlogPost from '../models/blogpost';
 import PostComment from '../models/comments';
 import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 import { sendNewCommentNotificationEmail, sendNewPostNotificationEmail } from '../services/mails';
+
+
+const ReBuildClientWebhook = () => {
+  fetch('https://api.vercel.com/v1/integrations/deploy/QmeHECbNq9vDkDKo6MHMLKAfhfkkY7wudcSpdnEWKKw7fe/6gzAA6PmZA', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(err => console.log(err));
+}
 
 exports.createPost = (req, res) => {
   parseImage(req, res, async (err) => {
@@ -33,6 +45,8 @@ exports.createPost = (req, res) => {
         });
       }
       await sendNewPostNotificationEmail(title, post._id);
+
+      ReBuildClientWebhook()
       res.status(201).send({
         message: 'published post to blog',
       });
@@ -151,6 +165,7 @@ exports.updatePost = async (req, res) => {
             message: err.message,
           });
         }
+        ReBuildClientWebhook();
         res.status(201).send({
           message: post,
         });
@@ -200,6 +215,8 @@ exports.createComment = async (req, res) => {
         });
       }
       sendNewCommentNotificationEmail(name, message, postTitle, postId);
+
+      ReBuildClientWebhook();
       return res.status(201).send({
         message: 'Comment added to list',
       });
