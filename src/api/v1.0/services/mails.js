@@ -9,16 +9,17 @@ const allSubscribers = async () => {
   return subscribers.map(subscriber => subscriber.email);
 };
 
-exports.sendNewCommentNotificationEmail = async (username, message, postTitle, postId, req, res) => {
-  const transporter = nodemailer.createTransport({
-    service: 'Sendgrid',
-    auth: {
-      user: process.env.SENDGRID_USERNAME, pass: process.env.SENDGRID_PASSWORD,
-    },
-  });
+const transporter = nodemailer.createTransport({
+  service: 'Sendgrid',
+  auth: {
+    user: process.env.SENDGRID_USERNAME, pass: process.env.SENDGRID_PASSWORD,
+  },
+});
+
+exports.sendNewCommentNotificationEmail = async (username, message, postTitle, postId) => {
   const mailOptions = {
-    from: process.env.CRON_EMAIL,
-    to: process.env.CRON_EMAIL_RECIPIENT,
+    from: process.env.ADMIN_EMAIL,
+    to: process.env.SENDGRID_USERNAME,
     subject: 'New Comment',
     html: `<div>
         <p>Hi,</p>
@@ -29,23 +30,16 @@ exports.sendNewCommentNotificationEmail = async (username, message, postTitle, p
   };
   transporter.sendMail(mailOptions, (err) => {
     if (err) {
-      return res.status(500).send({ message: err.message });
+      console.log(err)
     }
-    res.status(201).send({ message: 'A comment notification email has been sent.' });
   });
 };
 
-exports.sendNewPostNotificationEmail = async (postTitle, postId, res) => {
-  const transporter = nodemailer.createTransport({
-    service: 'Sendgrid',
-    auth: {
-      user: process.env.SENDGRID_USERNAME, pass: process.env.SENDGRID_PASSWORD,
-    },
-  });
+exports.sendNewPostNotificationEmail = async (postTitle, postId) => {
   const mailList = await allSubscribers();
   mailList.forEach((subscriber) => {
     const mailOptions = {
-      from: process.env.CRON_EMAIL,
+      from: process.env.ADMIN_EMAIL,
       to: subscriber,
       subject: 'New Post on Meedah\'s Marbles',
       html: `<div>
@@ -57,9 +51,7 @@ exports.sendNewPostNotificationEmail = async (postTitle, postId, res) => {
     transporter.sendMail(mailOptions, (err) => {
       if (err) {
         console.log(err);
-        return res.status(500).send({ message: err.message });
       }
-      res.status(201).send({ message: 'A comment notification email has been sent.' });
     });
   });
 };
