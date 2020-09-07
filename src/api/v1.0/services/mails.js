@@ -30,7 +30,7 @@ exports.sendNewCommentNotificationEmail = async (username, message, postTitle, p
   };
   transporter.sendMail(mailOptions, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
     }
   });
 };

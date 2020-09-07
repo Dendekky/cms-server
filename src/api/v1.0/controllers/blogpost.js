@@ -32,7 +32,7 @@ exports.createPost = (req, res) => {
           message: err.message,
         });
       }
-      await sendNewPostNotificationEmail(title, post._id)
+      await sendNewPostNotificationEmail(title, post._id);
       res.status(201).send({
         message: 'published post to blog',
       });
@@ -171,7 +171,9 @@ exports.deletePost = (req, res) => BlogPost.findByIdAndRemove(req.params.id, (er
 });
 
 exports.createComment = async (req, res) => {
-  const { name, message, postId, postTitle } = req.body;
+  const {
+    name, message, postId, postTitle,
+  } = req.body;
   try {
     const commentData = {
       name,
@@ -197,7 +199,7 @@ exports.createComment = async (req, res) => {
           message: err.message,
         });
       }
-      sendNewCommentNotificationEmail(name, message, postTitle, postId)
+      sendNewCommentNotificationEmail(name, message, postTitle, postId);
       return res.status(201).send({
         message: 'Comment added to list',
       });
