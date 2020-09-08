@@ -25,7 +25,7 @@ exports.sendNewCommentNotificationEmail = async (username, message, postTitle, p
         <p>Hi,</p>
         <p>${username} just made the following comment on the post '${postTitle}'. </p>
         <p style={{ marginLeft: "12px"}}>"${message}"</>
-        <p>You can view the comment <a href=https://marblesofhameedah.rock/post/${postId}>here</a></p>
+        <p>You can view the comment <a href=https://marblesofhameedah.rocks/post/${postId}>here</a></p>
         </div>`,
   };
   transporter.sendMail(mailOptions, (err) => {
