@@ -12,18 +12,17 @@ const ReBuildClientWebhook = () => {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
   })
-  .then(res => res.json())
-  .then(json => console.log(json))
-  .catch(err => console.log(err));
-}
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err));
+};
 
 const CreateSecureImageUrl = (url) => {
-  if (url.slice(0, 6) === "https:") {
-    return url
-  } else {
-    return `${url.substr(0, 4)}s${url.substr(4)}`
+  if (url.slice(0, 6) === 'https:') {
+    return url;
   }
-}
+  return `${url.substr(0, 4)}s${url.substr(4)}`;
+};
 
 exports.createPost = (req, res) => {
   parseImage(req, res, async (err) => {
@@ -54,7 +53,7 @@ exports.createPost = (req, res) => {
       }
       await sendNewPostNotificationEmail(title, post._id);
 
-      ReBuildClientWebhook()
+      ReBuildClientWebhook();
       res.status(201).send({
         message: 'published post to blog',
       });

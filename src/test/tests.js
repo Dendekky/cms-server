@@ -5,7 +5,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const assertArrays = require('chai-arrays');
 
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = 'test';
 const server = require('../bin/www');
 
 const should = chai.should();

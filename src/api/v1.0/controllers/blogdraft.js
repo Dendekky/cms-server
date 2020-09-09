@@ -4,12 +4,11 @@ import parseImage from '../config/multerconfig';
 import { uploadImage } from '../config/cloudinaryconfig';
 
 const CreateSecureImageUrl = (url) => {
-  if (url.slice(0, 6) === "https:") {
-    return url
-  } else {
-    return `${url.substr(0, 4)}s${url.substr(4)}`
+  if (url.slice(0, 6) === 'https:') {
+    return url;
   }
-}
+  return `${url.substr(0, 4)}s${url.substr(4)}`;
+};
 
 const createDraft = async (req, res) => {
   parseImage(req, res, async (err) => {
@@ -31,7 +30,7 @@ const createDraft = async (req, res) => {
       body,
       postImage,
     });
-    console.log(draft)
+    console.log(draft);
     draft.save((err) => {
       if (err) {
         return res.status(500).send({
