@@ -17,6 +17,14 @@ const ReBuildClientWebhook = () => {
   .catch(err => console.log(err));
 }
 
+const CreateSecureImageUrl = (url) => {
+  if (url.slice(0, 6) === "https:") {
+    return url
+  } else {
+    return `${url.substr(0, 4)}s${url.substr(4)}`
+  }
+}
+
 exports.createPost = (req, res) => {
   parseImage(req, res, async (err) => {
     const {
@@ -28,7 +36,7 @@ exports.createPost = (req, res) => {
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
-    const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
+    const postImage = req.files && req.files.postImage ? (CreateSecureImageUrl(`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`)) : postImageFile;
     const postTags = tags ? tags.split(',') : [];
 
     const post = new BlogPost({
@@ -153,7 +161,7 @@ exports.updatePost = async (req, res) => {
     }
     const file = req.files && req.files.postImage ? req.files.postImage[0].path : req.body.postImage;
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
-    const postImage = req.files && req.files.postImage ? (`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`) : postImageFile;
+    const postImage = req.files && req.files.postImage ? (CreateSecureImageUrl(`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`)) : postImageFile;
     const data = {
       title, category, body, postImage, tags,
     };
