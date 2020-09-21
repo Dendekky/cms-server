@@ -7,6 +7,12 @@ const postSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
+  slug: {
+    type: String,
+  },
+  excerpt: {
+    type: String,
+  },
   body: {
     type: String,
     required: true,

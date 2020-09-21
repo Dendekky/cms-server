@@ -27,7 +27,7 @@ const CreateSecureImageUrl = (url) => {
 exports.createPost = (req, res) => {
   parseImage(req, res, async (err) => {
     const {
-      title, category, body, tags,
+      title, category, body, tags, excerpt,
     } = req.body;
 
     if (err) {
@@ -37,14 +37,18 @@ exports.createPost = (req, res) => {
     const postImageFile = req.files && req.files.postImage ? await uploadImage(file) : file;
     const postImage = req.files && req.files.postImage ? (CreateSecureImageUrl(`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`)) : postImageFile;
     const postTags = tags ? tags.split(',') : [];
+    const slug = title.replace(/[^a-zA-Z ]/g, "").toLowerCase().split(' ').join('-')
 
     const post = new BlogPost({
       title,
       category,
+      excerpt,
       tags: postTags,
       body,
       postImage,
     });
+    post.slug = `${slug}-${post._id}`
+
     post.save(async (err) => {
       if (err) {
         return res.status(500).send({
@@ -102,7 +106,7 @@ exports.getPostsByCategory = (req, res) => BlogPost.find({ category: req.params.
 
 exports.getPost = async (req, res) => {
   try {
-    const post = await BlogPost.findOne({ _id: req.params.id })
+    const post = await BlogPost.findOne({ slug: req.params.slug })
       .lean()
       .populate('comments');
     if (!post) {
