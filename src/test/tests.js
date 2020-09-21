@@ -5,7 +5,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const assertArrays = require('chai-arrays');
 
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = 'test';
 const server = require('../bin/www');
 
 const should = chai.should();
@@ -23,6 +23,7 @@ const blog = {
 const draft = new BlogDraft(blog);
 
 const post = new BlogPost(blog);
+post.slug = `${post.title.replace(/[^a-zA-Z ]/g, "").toLowerCase().split(' ').join('-')}-${post._id}`
 
 describe('Mm server', async () => {
   describe('/GET server', () => {
@@ -139,9 +140,10 @@ describe('Mm server', async () => {
     });
 
     describe('Get post', () => {
-      it('it should get a draft', (done) => {
+      it('it should get a post', (done) => {
+        console.log(post)
         chai.request(server)
-          .get(`/api/post/${post.id}`)
+          .get(`/api/post/${post.slug}`)
           .end((err, res) => {
             res.should.have.status(200);
             done();

@@ -34,7 +34,7 @@ module.exports = (app) => {
   // Posts routes
   app.get('/api/post', getAllPosts);
   app.post('/api/post', createPost);
-  app.get('/api/post/:id', getPost);
+  app.get('/api/post/:slug', getPost);
   app.get('/api/posts/tags/:tag', getPostsByTag);
   app.get('/api/posts/categories/:category', getPostsByCategory);
   app.put('/api/post/:id', updatePost);
