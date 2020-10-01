@@ -25,20 +25,20 @@ module.exports = (app) => {
   // app.get('/api/users', authController.userList);
 
   // Drafts routes
-  app.post('/api/draft', draftController.createDraft);
+  app.post('/api/draft', authMiddleware.checkAuth, draftController.createDraft);
   app.get('/api/draft/:id', draftController.getDraft);
-  app.put('/api/draft/:id', draftController.updateDraft);
-  app.delete('/api/draft/:id', draftController.deleteDraft);
+  app.put('/api/draft/:id', authMiddleware.checkAuth, draftController.updateDraft);
+  app.delete('/api/draft/:id', authMiddleware.checkAuth, draftController.deleteDraft);
   app.get('/api/draft', draftController.getAllDrafts);
 
   // Posts routes
   app.get('/api/post', getAllPosts);
-  app.post('/api/post', createPost);
+  app.post('/api/post', authMiddleware.checkAuth, createPost);
   app.get('/api/post/:slug', getPost);
   app.get('/api/posts/tags/:tag', getPostsByTag);
   app.get('/api/posts/categories/:category', getPostsByCategory);
-  app.put('/api/post/:id', updatePost);
-  app.delete('/api/post/:id', deletePost);
+  app.put('/api/post/:id', authMiddleware.checkAuth, updatePost);
+  app.delete('/api/post/:id', authMiddleware.checkAuth, deletePost);
 
   // Subscriber routes
   app.get('/api/subscribers', getAllSubscribers);
