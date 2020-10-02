@@ -13,7 +13,7 @@ const CreateSecureImageUrl = (url) => {
 const createDraft = async (req, res) => {
   parseImage(req, res, async (err) => {
     const {
-      title, category, body, tags,
+      title, category, body, tags, excerpt,
     } = req.body;
 
     if (err) {
@@ -29,8 +29,8 @@ const createDraft = async (req, res) => {
       tags: postTags,
       body,
       postImage,
+      excerpt,
     });
-    console.log(draft);
     draft.save((err) => {
       if (err) {
         return res.status(500).send({
@@ -48,7 +48,7 @@ const createDraft = async (req, res) => {
 const updateDraft = async (req, res) => {
   parseImage(req, res, async (err) => {
     const {
-      title, category, body, tags,
+      title, category, body, tags, excerpt,
     } = req.body;
 
     if (err) {
@@ -60,7 +60,7 @@ const updateDraft = async (req, res) => {
     const postTags = tags ? tags.split(',') : [];
 
     const data = {
-      title, category, body, postImage, tags: postTags,
+      title, category, body, postImage, tags: postTags, excerpt,
     };
     BlogDraft.findByIdAndUpdate(
       req.params.id, data,
