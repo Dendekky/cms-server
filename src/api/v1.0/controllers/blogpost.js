@@ -56,7 +56,7 @@ exports.createPost = (req, res) => {
           message: err.message,
         });
       }
-      await sendNewPostNotificationEmail(title, post.slug);
+      await sendNewPostNotificationEmail(title, post.slug, post.excerpt, post.postImage);
 
       ReBuildClientWebhook();
       res.status(201).send({
@@ -157,7 +157,7 @@ exports.getPost = async (req, res) => {
 exports.updatePost = async (req, res) => {
   parseImage(req, res, async (err) => {
     const {
-      title, category, body, tags,
+      title, category, body, tags, excerpt
     } = req.body;
 
     if (err) {
@@ -168,7 +168,7 @@ exports.updatePost = async (req, res) => {
     const postImage = req.files && req.files.postImage
       ? (CreateSecureImageUrl(`${postImageFile.url.substr(0, 47)}/q_auto,f_auto${postImageFile.url.substr(47)}`)) : postImageFile;
     const data = {
-      title, category, body, postImage, tags,
+      title, category, body, postImage, tags, excerpt,
     };
     BlogPost.findByIdAndUpdate(
       req.params.id, data,
