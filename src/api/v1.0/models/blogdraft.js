@@ -7,6 +7,9 @@ const draftSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
+  excerpt: {
+    type: String,
+  },
   body: {
     type: String,
   },
