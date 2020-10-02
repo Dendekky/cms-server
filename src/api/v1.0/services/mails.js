@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-exports.sendNewCommentNotificationEmail = async (username, message, postTitle, postId) => {
+exports.sendNewCommentNotificationEmail = async (username, message, postTitle, slug) => {
   const mailOptions = {
     from: process.env.ADMIN_EMAIL,
     to: process.env.SENDGRID_USERNAME,
@@ -25,7 +25,7 @@ exports.sendNewCommentNotificationEmail = async (username, message, postTitle, p
         <p>Hi,</p>
         <p>${username} just made the following comment on the post '${postTitle}'. </p>
         <p style={{ marginLeft: "12px"}}>"${message}"</>
-        <p>You can view the comment <a href=https://marblesofhameedah.rocks/post/${postId}>here</a></p>
+        <p>You can view the comment <a href=https://marblesofhameedah.rocks/post/${slug}>here</a></p>
         </div>`,
   };
   transporter.sendMail(mailOptions, (err) => {
@@ -35,7 +35,7 @@ exports.sendNewCommentNotificationEmail = async (username, message, postTitle, p
   });
 };
 
-exports.sendNewPostNotificationEmail = async (postTitle, postId) => {
+exports.sendNewPostNotificationEmail = async (postTitle, slug) => {
   const mailList = await allSubscribers();
   mailList.forEach((subscriber) => {
     const mailOptions = {
@@ -45,7 +45,7 @@ exports.sendNewPostNotificationEmail = async (postTitle, postId) => {
       html: `<div>
       <p>Hello Dear Reader,</p>
       <p>I have just published the post '${postTitle}'. </p>
-      <p>You can check it out <a href=https://marblesofhameedah.rock/post/${postId}>here</a></p>
+      <p>You can check it out <a href=https://marblesofhameedah.rock/post/${slug}>here</a></p>
       </div>`,
     };
     transporter.sendMail(mailOptions, (err) => {
