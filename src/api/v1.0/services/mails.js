@@ -126,7 +126,7 @@ const blogPostEmailTemplate = (postTitle, slug, excerpt, postImage) => (
                           <table width="134" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
                             <tr>
                               <td data-bgcolor="bg-button" data-size="size button" data-min="10" data-max="16" class="btn" align="center" style="font:12px/14px Arial, Helvetica, sans-serif; color:#f8f9fb; text-transform:uppercase; mso-padding-alt:12px 10px 10px; border-radius:2px;" bgcolor="#7bb84f">
-                                <a target="_blank" style="text-decoration:none; color:#f8f9fb; display:block; padding:12px 10px 10px;" href=https://marblesofhameedah.rock/post/${slug}>Read More...</a>
+                                <a target="_blank" style="text-decoration:none; color:#f8f9fb; display:block; padding:12px 10px 10px;" href=https://marblesofhameedah.rocks/post/${slug}>Read More...</a>
                               </td>
                             </tr>
                           </table>
