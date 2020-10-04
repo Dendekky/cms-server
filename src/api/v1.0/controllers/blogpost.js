@@ -118,8 +118,8 @@ exports.getPost = async (req, res) => {
     if (post) {
       const allPost = await BlogPost.find();
       const relatedPosts = allPost.filter(
-        blogpost => blogpost.tags.some(val => post.tags.includes(val)) 
-        && blogpost._id.toString() !== post._id.toString()
+        blogpost => blogpost.tags.some(val => post.tags.includes(val))
+        && blogpost._id.toString() !== post._id.toString(),
       );
       post.relatedPosts = relatedPosts;
       post.commentsLength = post.comments.length;
@@ -160,7 +160,7 @@ exports.getPost = async (req, res) => {
 exports.updatePost = async (req, res) => {
   parseImage(req, res, async (err) => {
     const {
-      title, category, body, tags, excerpt
+      title, category, body, tags, excerpt,
     } = req.body;
 
     if (err) {
