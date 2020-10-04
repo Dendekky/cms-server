@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import { title } from 'process';
 import Subscriber from '../models/subscriber';
 
 // const primage= "https://res.cloudinary.com/dendekky/image/upload/q_auto,f_auto/v1597330601/yyrydqrrmhbwmdn8vx5l.jpg"
@@ -147,7 +146,7 @@ const blogPostEmailTemplate = (postTitle, slug, excerpt, postImage) => (
         </table>
       </body>
   </html>`
-)
+);
 
 exports.sendNewCommentNotificationEmail = async (username, message, postTitle, slug) => {
   const mailOptions = {
@@ -184,4 +183,3 @@ exports.sendNewPostNotificationEmail = async (postTitle, slug, excerpt, postImag
     });
   });
 };
-
