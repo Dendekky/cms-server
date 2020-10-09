@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 import Subscriber from '../models/subscriber';
 
-// const primage= "https://res.cloudinary.com/dendekky/image/upload/q_auto,f_auto/v1597330601/yyrydqrrmhbwmdn8vx5l.jpg"
-
 const allSubscribers = async () => {
   const subscribers = await Subscriber.find();
   if (!subscribers) {

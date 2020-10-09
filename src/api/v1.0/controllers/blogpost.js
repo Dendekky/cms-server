@@ -7,15 +7,15 @@ import { uploadImage } from '../config/cloudinaryconfig';
 import { sendNewCommentNotificationEmail, sendNewPostNotificationEmail } from '../services/mails';
 
 
-// const ReBuildClientWebhook = () => {
-//   fetch('https://api.vercel.com/v1/integrations/deploy/QmeHECbNq9vDkDKo6MHMLKAfhfkkY7wudcSpdnEWKKw7fe/6gzAA6PmZA', {
-//     method: 'post',
-//     headers: { 'Content-Type': 'application/json' },
-//   })
-//     .then(res => res.json())
-//     .then(json => console.log(json))
-//     .catch(err => console.log(err));
-// };
+const ReBuildClientWebhook = () => {
+  fetch('https://api.vercel.com/v1/integrations/deploy/QmeHECbNq9vDkDKo6MHMLKAfhfkkY7wudcSpdnEWKKw7fe/6gzAA6PmZA', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.log(err));
+};
 
 const CreateSecureImageUrl = (url) => {
   if (url.slice(0, 6) === 'https:') {
@@ -58,7 +58,7 @@ exports.createPost = (req, res) => {
       }
       await sendNewPostNotificationEmail(title, post.slug, post.excerpt, post.postImage);
 
-      // ReBuildClientWebhook();
+      ReBuildClientWebhook();
       res.status(201).send({
         message: 'published post to blog',
       });
@@ -181,7 +181,7 @@ exports.updatePost = async (req, res) => {
             message: err.message,
           });
         }
-        // ReBuildClientWebhook();
+        ReBuildClientWebhook();
         res.status(201).send({
           message: post,
         });
