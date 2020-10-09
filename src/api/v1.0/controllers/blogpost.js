@@ -232,7 +232,7 @@ exports.createComment = async (req, res) => {
       }
       sendNewCommentNotificationEmail(name, message, postTitle, slug);
 
-      // ReBuildClientWebhook();
+      ReBuildClientWebhook();
       return res.status(201).send({
         message: 'Comment added to list',
       });
