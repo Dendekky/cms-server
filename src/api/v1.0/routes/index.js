@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+import avatarsMiddleware from 'adorable-avatars';
 import {
   createPost, getPost, getAllPosts, getPostsByTag, getPostsByCategory, updatePost, deletePost, createComment,
 } from '../controllers/blogpost';
@@ -12,6 +13,7 @@ const authMiddleware = require('../middlewares/auth');
 
 
 module.exports = (app) => {
+  app.use('/api/avatars', avatarsMiddleware);
   app.get('/api', (req, res) => res.status(200).send({
     message: 'Welcome to the  Beenah API!',
   }));
