@@ -22,11 +22,9 @@ const sendMail =
           switch (_context.prev = _context.next) {
             case 0:
               try {
-                info = (0, _nodeFetch.default)('http://quotes.rest/qod.json?category=love').then(response => response.json()).catch(err => console.log(err));
-                console.log(info);
+                info = (0, _nodeFetch.default)('http://quotes.rest/qod.json?category=life').then(response => response.json()).catch(err => console.log(err));
                 info.then((results) => {
                   const data = results.contents.quotes.map(result => result.quote);
-                  console.log(data);
                   let message = '';
 
                   for (let i = 0; i < data.length; i++) {
